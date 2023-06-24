@@ -14,8 +14,8 @@ setup(
 )
 
 # DEVICE_NAME = 'celestica'
-# HW_SKU = 'x86_64-cel_questone2-r0'
-#
+# HW_SKU = 'x86_64-cel_questone_2-r0'
+
 # setup(
 #     name='sonic-platform',
 #     version='1.0',
