@@ -11,7 +11,7 @@ HW_SKU = "x86_64-cel_questone_2-r0"
 
 setup(
     name="sonic-platform",
-    version="0.1",
+    version="1.0",
     description="SONiC Platform API for Celestica Questone2 platforms",
     license="Apache 2.0",
     url="https://github.com/Azure/sonic-buildimage",
