@@ -1,3 +1,9 @@
+sonic-cel-platform-modules (0.10) unstable; urgency=low
+
+  * Add questone2 platform module.
+
+ -- Max Factourovich <mf2199@columbia.edu>  Fri, 17 Jul 2023 10:10:10 -0400
+
 sonic-cel-platform-modules (0.9) unstable; urgency=low
 
   * Add haliburton platform module.
@@ -13,7 +19,7 @@ sonic-cel-platform-modules (0.8) unstable; urgency=low
 
 sonic-cel-platform-modules (0.7) unstable; urgency=low
 
-  * Add dx010 plaform gpio sysfs exported when module load.
+  * Add dx010 platform gpio sysfs exported when module load.
 
  -- Pradchaya Phucharoen <pphuchar@celestica.com>  Wed, 21 Jun 2018 13:29:05 +0700
 
