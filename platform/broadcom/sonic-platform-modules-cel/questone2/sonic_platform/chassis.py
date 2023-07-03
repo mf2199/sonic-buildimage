@@ -44,16 +44,17 @@ class Chassis(ChassisBase):
         self.sfp_module_initialized = False
         self.fan_module_initialized = False
         self.__initialize_eeprom()
-        
-        #if not self._api_helper.is_host():
+
+        # if not self._api_helper.is_host():
         self.__initialize_thermals()
         self.__initialize_fan()
         self.__initialize_psu()
-        #else:
+        # else:
         self.__initialize_components()
 
     def __initialize_sfp(self):
         from sonic_platform.sfp import Sfp
+
         for index in range(0, NUM_SFP):
             sfp = Sfp(index)
             self._sfp_list.append(sfp)
@@ -61,6 +62,7 @@ class Chassis(ChassisBase):
 
     def __initialize_psu(self):
         from sonic_platform.psu import Psu
+
         for index in range(0, NUM_PSU):
             psu = Psu(index)
             self._psu_list.append(psu)
@@ -68,8 +70,9 @@ class Chassis(ChassisBase):
     def __initialize_fan(self):
         from sonic_platform.fan import Fan
         from sonic_platform.fan_drawer import FanDrawer
+
         for fand_index in range(0, NUM_FAN_DRAWER):
-            drawer_fan_list=[]
+            drawer_fan_list = []
             for fan_index in range(0, NUM_FAN_PER_DRAWER):
                 fan = Fan(fand_index, fan_index)
                 self._fan_list.append(fan)
@@ -77,24 +80,26 @@ class Chassis(ChassisBase):
             fan_drawer = FanDrawer(fand_index, drawer_fan_list)
             self._fan_drawer_list.append(fan_drawer)
         self.fan_module_initialized = True
-        
 
     def __initialize_thermals(self):
         from sonic_platform.thermal import Thermal
+
         for index in range(0, NUM_THERMAL):
             thermal = Thermal(index)
             self._thermal_list.append(thermal)
 
     def __initialize_eeprom(self):
         from sonic_platform.eeprom import Eeprom
+
         self._eeprom = Eeprom(TLV_EEPROM_I2C_BUS, TLV_EEPROM_I2C_ADDR)
-    
+
     def __initialize_components(self):
         from sonic_platform.component import Component
+
         for index in range(0, NUM_COMPONENT):
             component = Component(index)
             self._component_list.append(component)
-    
+
     def initizalize_system_led(self):
         return True
 
@@ -142,18 +147,40 @@ class Chassis(ChassisBase):
             to pass a description of the reboot cause.
         """
         hx_cause = self._api_helper.get_register_value(
-            BASE_GETREG_PATH, REBOOT_CAUSE_REG)
+            BASE_GETREG_PATH, REBOOT_CAUSE_REG
+        )
 
         return {
-            "0x00": (self.REBOOT_CAUSE_HARDWARE_OTHER, 'Unknown'),
-            "0x11": (self.REBOOT_CAUSE_POWER_LOSS, 'The last reset is Power on reset'),
-            "0x22": (self.REBOOT_CAUSE_HARDWARE_OTHER, 'The last reset is soft-set CPU warm reset'),
-            "0x33": (self.REBOOT_CAUSE_HARDWARE_OTHER, 'The last reset is soft-set CPU cold reset'),
-            "0x44": (self.REBOOT_CAUSE_HARDWARE_OTHER, 'The last reset is CPU warm reset'),
-            "0x55": (self.REBOOT_CAUSE_HARDWARE_OTHER, 'The last reset is CPU cold reset'),
-            "0x66": (self.REBOOT_CAUSE_WATCHDOG, 'The last reset is watchdog reset'),
-            "0x77": (self.REBOOT_CAUSE_HARDWARE_OTHER, 'The last reset is power cycle reset'),
-        }.get(hx_cause.lower(), (self.REBOOT_CAUSE_HARDWARE_OTHER, 'Unknown'))
+            "0x00": (self.REBOOT_CAUSE_HARDWARE_OTHER, "Unknown"),
+            "0x11": (
+                self.REBOOT_CAUSE_POWER_LOSS,
+                "The last reset is Power on reset",
+            ),
+            "0x22": (
+                self.REBOOT_CAUSE_HARDWARE_OTHER,
+                "The last reset is soft-set CPU warm reset",
+            ),
+            "0x33": (
+                self.REBOOT_CAUSE_HARDWARE_OTHER,
+                "The last reset is soft-set CPU cold reset",
+            ),
+            "0x44": (
+                self.REBOOT_CAUSE_HARDWARE_OTHER,
+                "The last reset is CPU warm reset",
+            ),
+            "0x55": (
+                self.REBOOT_CAUSE_HARDWARE_OTHER,
+                "The last reset is CPU cold reset",
+            ),
+            "0x66": (
+                self.REBOOT_CAUSE_WATCHDOG,
+                "The last reset is watchdog reset",
+            ),
+            "0x77": (
+                self.REBOOT_CAUSE_HARDWARE_OTHER,
+                "The last reset is power cycle reset",
+            ),
+        }.get(hx_cause.lower(), (self.REBOOT_CAUSE_HARDWARE_OTHER, "Unknown"))
 
     ##############################################################
     ######################## SFP methods #########################
@@ -200,8 +227,11 @@ class Chassis(ChassisBase):
         try:
             sfp = self._sfp_list[index]
         except IndexError:
-            sys.stderr.write("SFP index {} out of range (1-{})\n".format(
-                             index, len(self._sfp_list)))
+            sys.stderr.write(
+                "SFP index {} out of range (1-{})\n".format(
+                    index, len(self._sfp_list)
+                )
+            )
         return sfp
 
     ##############################################################
@@ -217,6 +247,7 @@ class Chassis(ChassisBase):
         """
         if self._watchdog is None:
             from sonic_platform.watchdog import Watchdog
+
             self._watchdog = Watchdog()
 
         return self._watchdog
@@ -312,7 +343,12 @@ class Chassis(ChassisBase):
                   Note: For sfp, when event 3-6 happened, the module will not be avalaible,
                         XCVRD shall stop to read eeprom before SFP recovered from error status.
         """
-        from sonic_platform.event import FanEvent, SfpEvent, VoltageEvent, POLL_INTERVAL
+        from sonic_platform.event import (
+            FanEvent,
+            SfpEvent,
+            VoltageEvent,
+            POLL_INTERVAL,
+        )
 
         if not self.fan_module_initialized:
             self.__initialize_fan()
@@ -329,25 +365,33 @@ class Chassis(ChassisBase):
         start_milli_time = int(round(time.time() * 1000))
         int_sfp, int_fan, int_volt = {}, {}, {}
 
-        sleep_time = min(
-            timeout, POLL_INTERVAL) if timeout != 0 else POLL_INTERVAL
+        sleep_time = (
+            min(timeout, POLL_INTERVAL) if timeout != 0 else POLL_INTERVAL
+        )
         while True:
             chk_sfp = sfp_event.check_all_port_interrupt_event()
-            int_sfp = sfp_event.update_port_event_object(
-                chk_sfp, int_sfp) if chk_sfp else int_sfp
+            int_sfp = (
+                sfp_event.update_port_event_object(chk_sfp, int_sfp)
+                if chk_sfp
+                else int_sfp
+            )
             int_fan = fan_event.check_fan_status(cur_fan_state, int_fan)
-            int_volt = voltage_event.check_voltage_status(cur_volt_state, int_volt)
+            int_volt = voltage_event.check_voltage_status(
+                cur_volt_state, int_volt
+            )
 
             current_milli_time = int(round(time.time() * 1000))
-            if (int_sfp or int_fan or int_volt) or \
-                    (timeout != 0 and current_milli_time - start_milli_time > timeout):
+            if (int_sfp or int_fan or int_volt) or (
+                timeout != 0
+                and current_milli_time - start_milli_time > timeout
+            ):
                 break
 
             time.sleep(sleep_time)
 
         change_dict = dict()
-        change_dict['fan'] = int_fan
-        change_dict['sfp'] = int_sfp
-        change_dict['voltage'] = int_volt
+        change_dict["fan"] = int_fan
+        change_dict["sfp"] = int_sfp
+        change_dict["voltage"] = int_volt
 
         return True, change_dict

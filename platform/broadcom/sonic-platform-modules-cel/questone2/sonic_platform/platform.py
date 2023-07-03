@@ -14,10 +14,10 @@ try:
 except ImportError as e:
     raise ImportError(str(e) + "- required module not found")
 
+
 class Platform(PlatformBase):
     """Platform-specific Platform class"""
 
     def __init__(self):
         PlatformBase.__init__(self)
         self._chassis = Chassis()
-

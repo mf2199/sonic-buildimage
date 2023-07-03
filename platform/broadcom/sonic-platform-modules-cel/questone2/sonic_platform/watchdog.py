@@ -13,21 +13,20 @@ try:
 except ImportError as e:
     raise ImportError(str(e) + "- required module not found")
 
-PLATFORM_CPLD_PATH = '/sys/devices/platform/sys_cpld/'
-GETREG_FILE = 'getreg'
-SETREG_FILE = 'setreg'
-WDT_ENABLE_REG = '0xA181'
-WDT_TIMER_L_BIT_REG = '0xA182'
-WDT_TIMER_M_BIT_REG = '0xA183'
-WDT_TIMER_H_BIT_REG = '0xA184'
-WDT_KEEP_ALVIVE_REG = '0xA185'
-ENABLE_CMD = '0x1'
-DISABLE_CMD = '0x0'
+PLATFORM_CPLD_PATH = "/sys/devices/platform/sys_cpld/"
+GETREG_FILE = "getreg"
+SETREG_FILE = "setreg"
+WDT_ENABLE_REG = "0xA181"
+WDT_TIMER_L_BIT_REG = "0xA182"
+WDT_TIMER_M_BIT_REG = "0xA183"
+WDT_TIMER_H_BIT_REG = "0xA184"
+WDT_KEEP_ALVIVE_REG = "0xA185"
+ENABLE_CMD = "0x1"
+DISABLE_CMD = "0x0"
 WDT_COMMON_ERROR = -1
 
 
 class Watchdog(WatchdogBase):
-
     def __init__(self):
         WatchdogBase.__init__(self)
 
@@ -47,7 +46,7 @@ class Watchdog(WatchdogBase):
         Turn on the watchdog timer
         """
         # echo 0xA181 0x1 > /sys/devices/platform/baseboard/setreg
-        enable_val = '{} {}'.format(WDT_ENABLE_REG, ENABLE_CMD)
+        enable_val = "{} {}".format(WDT_ENABLE_REG, ENABLE_CMD)
         return self._api_helper.write_file(self.setreg_path, enable_val)
 
     def _disable(self):
@@ -55,7 +54,7 @@ class Watchdog(WatchdogBase):
         Turn off the watchdog timer
         """
         # echo 0xA181 0x0 > /sys/devices/platform/baseboard/setreg
-        disable_val = '{} {}'.format(WDT_ENABLE_REG, DISABLE_CMD)
+        disable_val = "{} {}".format(WDT_ENABLE_REG, DISABLE_CMD)
         return self._api_helper.write_file(self.setreg_path, disable_val)
 
     def _keepalive(self):
@@ -63,7 +62,7 @@ class Watchdog(WatchdogBase):
         Keep alive watchdog timer
         """
         # echo 0xA185 0x1 > /sys/devices/platform/baseboard/setreg
-        enable_val = '{} {}'.format(WDT_KEEP_ALVIVE_REG, ENABLE_CMD)
+        enable_val = "{} {}".format(WDT_KEEP_ALVIVE_REG, ENABLE_CMD)
         return self._api_helper.write_file(self.setreg_path, enable_val)
 
     def _get_level_hex(self, sub_hex):
@@ -71,7 +70,7 @@ class Watchdog(WatchdogBase):
         return hex(int(sub_hex_str, 16))
 
     def _seconds_to_lmh_hex(self, seconds):
-        ms = seconds*1000  # calculate timeout in ms format
+        ms = seconds * 1000  # calculate timeout in ms format
         hex_str = hex(ms)
         l = self._get_level_hex(hex_str[-2:])
         m = self._get_level_hex(hex_str[-4:-2])
@@ -87,16 +86,17 @@ class Watchdog(WatchdogBase):
         # max = 0xffffff = 16777.215 seconds
 
         (l, m, h) = self._seconds_to_lmh_hex(seconds)
-        set_h_val = '{} {}'.format(WDT_TIMER_H_BIT_REG, h)
-        set_m_val = '{} {}'.format(WDT_TIMER_M_BIT_REG, m)
-        set_l_val = '{} {}'.format(WDT_TIMER_L_BIT_REG, l)
+        set_h_val = "{} {}".format(WDT_TIMER_H_BIT_REG, h)
+        set_m_val = "{} {}".format(WDT_TIMER_M_BIT_REG, m)
+        set_l_val = "{} {}".format(WDT_TIMER_L_BIT_REG, l)
 
         self._api_helper.write_file(
-            self.setreg_path, set_h_val)  # set high bit
-        self._api_helper.write_file(
-            self.setreg_path, set_m_val)  # set med bit
+            self.setreg_path, set_h_val
+        )  # set high bit
+        self._api_helper.write_file(self.setreg_path, set_m_val)  # set med bit
         self._api_helper.write__file(
-            self.setreg_path, set_l_val)  # set low bit
+            self.setreg_path, set_l_val
+        )  # set low bit
 
         return seconds
 
@@ -107,15 +107,18 @@ class Watchdog(WatchdogBase):
         """
 
         h_bit = self._api_helper.get_register_value(
-            self.getreg_path, WDT_TIMER_H_BIT_REG)
+            self.getreg_path, WDT_TIMER_H_BIT_REG
+        )
         m_bit = self._api_helper.get_register_value(
-            self.getreg_path, WDT_TIMER_M_BIT_REG)
+            self.getreg_path, WDT_TIMER_M_BIT_REG
+        )
         l_bit = self._api_helper.get_register_value(
-            self.getreg_path, WDT_TIMER_L_BIT_REG)
+            self.getreg_path, WDT_TIMER_L_BIT_REG
+        )
 
-        hex_time = '0x{}{}{}'.format(h_bit[2:], m_bit[2:], l_bit[2:])
+        hex_time = "0x{}{}{}".format(h_bit[2:], m_bit[2:], l_bit[2:])
         ms = int(hex_time, 16)
-        return int(float(ms)/1000)
+        return int(float(ms) / 1000)
 
     #################################################################
 
@@ -188,4 +191,8 @@ class Watchdog(WatchdogBase):
             watchdog timer. If the watchdog is not armed, returns -1.
         """
 
-        return int(self.timeout - (time.time() - self.arm_timestamp)) if self.armed else WDT_COMMON_ERROR
+        return (
+            int(self.timeout - (time.time() - self.arm_timestamp))
+            if self.armed
+            else WDT_COMMON_ERROR
+        )

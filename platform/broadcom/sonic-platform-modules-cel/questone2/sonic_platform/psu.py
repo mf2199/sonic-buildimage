@@ -16,30 +16,32 @@ except ImportError as e:
     raise ImportError(str(e) + "- required module not found")
 
 PSU_NUM_FAN = [1, 1]
-PSU_INFO_MAPPING = {                                                                                              0: {
+PSU_INFO_MAPPING = {
+    0: {
         "name": "PSU-R",
-        "power_status_offset":2,
-        "presence_offset":4,
-        "fru_num":"4",
-        "power":"PSUR_POut",
-        "current":"PSUR_COut",
-        "voltage":"PSUR_VOut"
-    },  
+        "power_status_offset": 2,
+        "presence_offset": 4,
+        "fru_num": "4",
+        "power": "PSUR_POut",
+        "current": "PSUR_COut",
+        "voltage": "PSUR_VOut",
+    },
     1: {
         "name": "PSU-L",
-        "power_status_offset":3,
-        "presence_offset":5,
-        "fru_num":"3",
-        "power":"PSUL_POut",
-        "current":"PSUL_COut",
-        "voltage":"PSUL_VOut"
-    }  
+        "power_status_offset": 3,
+        "presence_offset": 5,
+        "fru_num": "3",
+        "power": "PSUL_POut",
+        "current": "PSUL_COut",
+        "voltage": "PSUL_VOut",
+    },
 }
 
-IPMI_RAW="ipmitool raw 0x3a 0x0c 0x0 0x2 0x60"
-IPMI_FRU_MODEL="ipmitool fru list {} | grep 'Product Part Number'"
-IPMI_FRU_SERIAL="ipmitool fru list {} | grep 'Product Serial'"
-IPMI_SDR="ipmitool sdr | grep {}"
+IPMI_RAW = "ipmitool raw 0x3a 0x0c 0x0 0x2 0x60"
+IPMI_FRU_MODEL = "ipmitool fru list {} | grep 'Product Part Number'"
+IPMI_FRU_SERIAL = "ipmitool fru list {} | grep 'Product Serial'"
+IPMI_SDR = "ipmitool sdr | grep {}"
+
 
 class Psu(PsuBase):
     """Platform-specific Psu class"""
@@ -48,7 +50,7 @@ class Psu(PsuBase):
         PsuBase.__init__(self)
         self.index = psu_index
         self._api_helper = APIHelper()
-        fan = Fan(0, 0, True, self.index, 'N/A')
+        fan = Fan(0, 0, True, self.index, "N/A")
         self._fan_list.append(fan)
 
     def get_voltage(self):
@@ -62,7 +64,7 @@ class Psu(PsuBase):
         if not self.get_status():
             return psu_voltage
 
-        cmd=IPMI_SDR.format(PSU_INFO_MAPPING[self.index]["voltage"])
+        cmd = IPMI_SDR.format(PSU_INFO_MAPPING[self.index]["voltage"])
         status, voltage = self._api_helper.run_command(cmd)
         if status:
             return float(voltage.split()[2])
@@ -86,13 +88,12 @@ class Psu(PsuBase):
         if not self.get_status():
             return psu_current
 
-        cmd=IPMI_SDR.format(PSU_INFO_MAPPING[self.index]["current"])
+        cmd = IPMI_SDR.format(PSU_INFO_MAPPING[self.index]["current"])
         status, current = self._api_helper.run_command(cmd)
         if status:
             return float(current.split()[2])
         else:
             return psu_current
-
 
     def get_power(self):
         """
@@ -105,7 +106,7 @@ class Psu(PsuBase):
         if not self.get_status():
             return psu_power
 
-        cmd=IPMI_SDR.format(PSU_INFO_MAPPING[self.index]["power"])
+        cmd = IPMI_SDR.format(PSU_INFO_MAPPING[self.index]["power"])
         status, power = self._api_helper.run_command(cmd)
         if status:
             return float(power.split()[2])
@@ -140,7 +141,7 @@ class Psu(PsuBase):
         Returns:
             A string, one of the predefined STATUS_LED_COLOR_* strings above
         """
-        return 'N/A'
+        return "N/A"
 
     ##############################################################
     ###################### Device methods ########################
@@ -162,8 +163,16 @@ class Psu(PsuBase):
         """
         status, psu_presence = self._api_helper.run_command(IPMI_RAW)
         if status:
-            return True if (int(psu_presence,16) >> \
-                PSU_INFO_MAPPING[self.index]['presence_offset'] & 1) == 0  else False
+            return (
+                True
+                if (
+                    int(psu_presence, 16)
+                    >> PSU_INFO_MAPPING[self.index]["presence_offset"]
+                    & 1
+                )
+                == 0
+                else False
+            )
         else:
             return False
 
@@ -173,12 +182,12 @@ class Psu(PsuBase):
         Returns:
             string: Model/part number of device
         """
-        cmd=IPMI_FRU_MODEL.format(PSU_INFO_MAPPING[self.index]['fru_num'])
-        status, model= self._api_helper.run_command(cmd)
+        cmd = IPMI_FRU_MODEL.format(PSU_INFO_MAPPING[self.index]["fru_num"])
+        status, model = self._api_helper.run_command(cmd)
         if status:
             return model.split()[-1]
         else:
-            return 'N/A'
+            return "N/A"
 
     def get_serial(self):
         """
@@ -186,12 +195,12 @@ class Psu(PsuBase):
         Returns:
             string: Serial number of device
         """
-        cmd=IPMI_FRU_SERIAL.format(PSU_INFO_MAPPING[self.index]['fru_num'])
-        status, model= self._api_helper.run_command(cmd)
+        cmd = IPMI_FRU_SERIAL.format(PSU_INFO_MAPPING[self.index]["fru_num"])
+        status, model = self._api_helper.run_command(cmd)
         if status:
             return model.split()[-1]
         else:
-            return 'N/A'
+            return "N/A"
 
     def get_status(self):
         """
@@ -201,7 +210,15 @@ class Psu(PsuBase):
         """
         status, psu_status = self._api_helper.run_command(IPMI_RAW)
         if status:
-            return True if (int(psu_status,16) >> \
-                  PSU_INFO_MAPPING[self.index]['power_status_offset'] & 1) == 1  else False
+            return (
+                True
+                if (
+                    int(psu_status, 16)
+                    >> PSU_INFO_MAPPING[self.index]["power_status_offset"]
+                    & 1
+                )
+                == 1
+                else False
+            )
         else:
             return False

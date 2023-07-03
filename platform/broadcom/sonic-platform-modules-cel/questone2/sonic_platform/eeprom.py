@@ -13,6 +13,7 @@ try:
     import os
     import sys
     import re
+
     if sys.version_info.major == 3:
         from io import StringIO
     else:
@@ -21,32 +22,34 @@ try:
 except ImportError as e:
     raise ImportError(str(e) + "- required module not found")
 
-CACHE_ROOT = '/var/cache/sonic/decode-syseeprom'
-CACHE_FILE = 'syseeprom_cache'
+CACHE_ROOT = "/var/cache/sonic/decode-syseeprom"
+CACHE_FILE = "syseeprom_cache"
 
 
 class Eeprom(eeprom_tlvinfo.TlvInfoDecoder):
-
     EEPROM_DECODE_HEADLINES = 6
 
     def __init__(self, i2c, reg):
-        self._eeprom_path = "/sys/class/i2c-adapter/i2c-{0}/{0}-00{1}/eeprom".format(i2c, reg)
-        super(Eeprom, self).__init__(self._eeprom_path, 0, '', True)
+        self._eeprom_path = (
+            "/sys/class/i2c-adapter/i2c-{0}/{0}-00{1}/eeprom".format(i2c, reg)
+        )
+        super(Eeprom, self).__init__(self._eeprom_path, 0, "", True)
         self._eeprom = self._load_eeprom()
 
     def __parse_output(self, decode_output):
-        decode_output.replace('\0', '')
-        lines = decode_output.split('\n')
-        lines = lines[self.EEPROM_DECODE_HEADLINES:]
+        decode_output.replace("\0", "")
+        lines = decode_output.split("\n")
+        lines = lines[self.EEPROM_DECODE_HEADLINES :]
         _eeprom_info_dict = dict()
 
         for line in lines:
             try:
                 match = re.search(
-                    '(0x[0-9a-fA-F]{2})([\s]+[\S]+[\s]+)([\S]+)', line)
+                    "(0x[0-9a-fA-F]{2})([\s]+[\S]+[\s]+)([\S]+)", line
+                )
                 if match is not None:
                     idx = match.group(1)
-                    value = match.group(3).rstrip('\0')
+                    value = match.group(3).rstrip("\0")
 
                 _eeprom_info_dict[idx] = value
             except Exception:
@@ -64,7 +67,7 @@ class Eeprom(eeprom_tlvinfo.TlvInfoDecoder):
             return self.__parse_output(decode_output)
 
         status = self.check_status()
-        if 'ok' not in status:
+        if "ok" not in status:
             return False
 
         if not os.path.exists(CACHE_ROOT):
@@ -105,13 +108,13 @@ class Eeprom(eeprom_tlvinfo.TlvInfoDecoder):
         return self._eeprom
 
     def get_product(self):
-        return self._eeprom.get('0x21', "Undefined.")
+        return self._eeprom.get("0x21", "Undefined.")
 
     def get_pn(self):
-        return self._eeprom.get('0x22', "Undefined.")
+        return self._eeprom.get("0x22", "Undefined.")
 
     def get_serial(self):
-        return self._eeprom.get('0x23', "Undefined.")
+        return self._eeprom.get("0x23", "Undefined.")
 
     def get_mac(self):
-        return self._eeprom.get('0x24', "Undefined.")
+        return self._eeprom.get("0x24", "Undefined.")

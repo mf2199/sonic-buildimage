@@ -14,10 +14,11 @@ try:
 except ImportError as e:
     raise ImportError(str(e) + "- required module not found")
 
-IPMI_GET_TEM="ipmitool raw 0x04 0x2D "
-IPMI_GET_HIGH_THR="ipmitool raw 0x04 0x27 "
-IPMI_SET_THR="ipmitool sensor thresh "
-DEFAULT_VAL = 'N/A'
+IPMI_GET_TEM = "ipmitool raw 0x04 0x2D "
+IPMI_GET_HIGH_THR = "ipmitool raw 0x04 0x27 "
+IPMI_SET_THR = "ipmitool sensor thresh "
+DEFAULT_VAL = "N/A"
+
 
 class Thermal(ThermalBase):
     """Platform-specific Thermal class"""
@@ -30,15 +31,15 @@ class Thermal(ThermalBase):
         ######  Thermal list defined #######
         # (NAME , val, set high  threshold)
         self.THERMAL_LIST = [
-            ('Base_Temp_U5',       '0x1', ' unc '),
-            ('Base_Temp_U7',       '0x2', ' unc '),
-            ('CPU_Temp',           '0x7', ' unc '),
-            ('Switch_Temp_U1',     '0x3', ' unc '),
-            ('Switch_Temp_U18',    '0x4', ' unc '),
-            ('Switch_Temp_U28',    '0x5', ' unc '),
-            ('Switch_Temp_U29',    '0x6', ' unc '),
-            ('Switch_U21_Temp',    '0x56', ' unc '),
-            ('Switch_U33_Temp',    '0x4c', ' unc ')
+            ("Base_Temp_U5", "0x1", " unc "),
+            ("Base_Temp_U7", "0x2", " unc "),
+            ("CPU_Temp", "0x7", " unc "),
+            ("Switch_Temp_U1", "0x3", " unc "),
+            ("Switch_Temp_U18", "0x4", " unc "),
+            ("Switch_Temp_U28", "0x5", " unc "),
+            ("Switch_Temp_U29", "0x6", " unc "),
+            ("Switch_U21_Temp", "0x56", " unc "),
+            ("Switch_U33_Temp", "0x4c", " unc "),
         ]
 
     def get_temperature(self):
@@ -48,8 +49,8 @@ class Thermal(ThermalBase):
             A float number of current temperature in Celsius up to nearest thousandth
             of one degree Celsius, e.g. 30.125
         """
-        get_tem=IPMI_GET_TEM+self.THERMAL_LIST[self.thermal_index][1]
-        status, raw_tem=self._api_helper.run_command(get_tem)
+        get_tem = IPMI_GET_TEM + self.THERMAL_LIST[self.thermal_index][1]
+        status, raw_tem = self._api_helper.run_command(get_tem)
         if status:
             return float(int(raw_tem.split()[0], 16))
         else:
@@ -62,13 +63,13 @@ class Thermal(ThermalBase):
             A float number, the high threshold temperature of thermal in Celsius
             up to nearest thousandth of one degree Celsius, e.g. 30.125
         """
-        no_thre=[2,7,8]
-        default_thre=80.0
+        no_thre = [2, 7, 8]
+        default_thre = 80.0
         if self.thermal_index in no_thre:
-            return  default_thre
+            return default_thre
 
-        get_thre=IPMI_GET_HIGH_THR+self.THERMAL_LIST[self.thermal_index][1]
-        status, raw_thre=self._api_helper.run_command(get_thre)
+        get_thre = IPMI_GET_HIGH_THR + self.THERMAL_LIST[self.thermal_index][1]
+        status, raw_thre = self._api_helper.run_command(get_thre)
         if status:
             return float(int(raw_thre.split()[4], 16))
         else:
@@ -83,14 +84,17 @@ class Thermal(ThermalBase):
         Returns:
             A boolean, True if threshold is set successfully, False if not
         """
-        set_thre=IPMI_SET_THR+self.THERMAL_LIST[self.thermal_index][0]+\
-                self.THERMAL_LIST[self.thermal_index][2]+str(temperature)
-        status, raw_thre=self._api_helper.run_command(set_thre)
+        set_thre = (
+            IPMI_SET_THR
+            + self.THERMAL_LIST[self.thermal_index][0]
+            + self.THERMAL_LIST[self.thermal_index][2]
+            + str(temperature)
+        )
+        status, raw_thre = self._api_helper.run_command(set_thre)
         if status:
             return True
         else:
             return False
-
 
     def get_low_threshold(self):
         """
@@ -100,7 +104,6 @@ class Thermal(ThermalBase):
             up to nearest thousandth of one degree Celsius, e.g. 30.125
         """
         return DEFAULT_VAL
-
 
     def set_low_threshold(self, temperature):
         """
@@ -120,8 +123,8 @@ class Thermal(ThermalBase):
             A float number, the high critical threshold temperature of thermal in Celsius
             up to nearest thousandth of one degree Celsius, e.g. 30.125
         """
-        get_thre=IPMI_GET_HIGH_THR+self.THERMAL_LIST[self.thermal_index][1]
-        status, raw_thre=self._api_helper.run_command(get_thre)
+        get_thre = IPMI_GET_HIGH_THR + self.THERMAL_LIST[self.thermal_index][1]
+        status, raw_thre = self._api_helper.run_command(get_thre)
         if status:
             return float(int(raw_thre.split()[5], 16))
         else:

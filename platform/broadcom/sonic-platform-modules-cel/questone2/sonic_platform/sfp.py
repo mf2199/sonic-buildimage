@@ -129,24 +129,45 @@ SFP_CHANNL_STATUS_OFFSET = 110
 SFP_CHANNL_STATUS_WIDTH = 1
 
 
-qsfp_cable_length_tup = ('Length(km)', 'Length OM3(2m)',
-                         'Length OM2(m)', 'Length OM1(m)',
-                         'Length Cable Assembly(m)')
+qsfp_cable_length_tup = (
+    "Length(km)",
+    "Length OM3(2m)",
+    "Length OM2(m)",
+    "Length OM1(m)",
+    "Length Cable Assembly(m)",
+)
 
-sfp_cable_length_tup = ('LengthSMFkm-UnitsOfKm', 'LengthSMF(UnitsOf100m)',
-                        'Length50um(UnitsOf10m)', 'Length62.5um(UnitsOfm)',
-                        'LengthCable(UnitsOfm)', 'LengthOM3(UnitsOf10m)')
+sfp_cable_length_tup = (
+    "LengthSMFkm-UnitsOfKm",
+    "LengthSMF(UnitsOf100m)",
+    "Length50um(UnitsOf10m)",
+    "Length62.5um(UnitsOfm)",
+    "LengthCable(UnitsOfm)",
+    "LengthOM3(UnitsOf10m)",
+)
 
-sfp_compliance_code_tup = ('10GEthernetComplianceCode', 'InfinibandComplianceCode',
-                           'ESCONComplianceCodes', 'SONETComplianceCodes',
-                           'EthernetComplianceCodes', 'FibreChannelLinkLength',
-                           'FibreChannelTechnology', 'SFP+CableTechnology',
-                           'FibreChannelTransmissionMedia', 'FibreChannelSpeed')
+sfp_compliance_code_tup = (
+    "10GEthernetComplianceCode",
+    "InfinibandComplianceCode",
+    "ESCONComplianceCodes",
+    "SONETComplianceCodes",
+    "EthernetComplianceCodes",
+    "FibreChannelLinkLength",
+    "FibreChannelTechnology",
+    "SFP+CableTechnology",
+    "FibreChannelTransmissionMedia",
+    "FibreChannelSpeed",
+)
 
-qsfp_compliance_code_tup = ('10/40G Ethernet Compliance Code', 'SONET Compliance codes',
-                            'SAS/SATA compliance codes', 'Gigabit Ethernet Compliant codes',
-                            'Fibre Channel link length/Transmitter Technology',
-                            'Fibre Channel transmission media', 'Fibre Channel Speed')
+qsfp_compliance_code_tup = (
+    "10/40G Ethernet Compliance Code",
+    "SONET Compliance codes",
+    "SAS/SATA compliance codes",
+    "Gigabit Ethernet Compliant codes",
+    "Fibre Channel link length/Transmitter Technology",
+    "Fibre Channel transmission media",
+    "Fibre Channel Speed",
+)
 
 SFP_TYPE = "SFP"
 QSFP_TYPE = "QSFP"
@@ -159,7 +180,7 @@ QSFP_PORT_END = 56
 SFP_PORT_START = 1
 SFP_PORT_END = 48
 
-PORT_INFO_PATH = '/sys/class/questone2_fpga'
+PORT_INFO_PATH = "/sys/class/questone2_fpga"
 SFP_I2C_START = 2
 
 
@@ -182,7 +203,7 @@ class Sfp(SfpBase):
         self.hwsku = self._api_helper.hwsku
 
         # Init eeprom path
-        eeprom_path = '/sys/bus/i2c/devices/i2c-{0}/{0}-0050/eeprom'
+        eeprom_path = "/sys/bus/i2c/devices/i2c-{0}/{0}-0050/eeprom"
         self.port_to_eeprom_mapping = {}
         self.port_to_i2c_mapping = {}
 
@@ -191,14 +212,69 @@ class Sfp(SfpBase):
             port_eeprom_path = eeprom_path.format(self.port_to_i2c_mapping[x])
             self.port_to_eeprom_mapping[x] = port_eeprom_path
 
-        self.info_dict_keys = ['type', 'hardware_rev', 'serial', 'manufacturer', 'model', 'connector', 'encoding', 'ext_identifier',
-                               'ext_rateselect_compliance', 'cable_type', 'cable_length', 'nominal_bit_rate', 'specification_compliance', 'vendor_date', 'vendor_oui']
+        self.info_dict_keys = [
+            "type",
+            "hardware_rev",
+            "serial",
+            "manufacturer",
+            "model",
+            "connector",
+            "encoding",
+            "ext_identifier",
+            "ext_rateselect_compliance",
+            "cable_type",
+            "cable_length",
+            "nominal_bit_rate",
+            "specification_compliance",
+            "vendor_date",
+            "vendor_oui",
+        ]
 
-        self.dom_dict_keys = ['rx_los', 'tx_fault', 'reset_status', 'power_lpmode', 'tx_disable', 'tx_disable_channel', 'temperature', 'voltage',
-                              'rx1power', 'rx2power', 'rx3power', 'rx4power', 'tx1bias', 'tx2bias', 'tx3bias', 'tx4bias', 'tx1power', 'tx2power', 'tx3power', 'tx4power']
+        self.dom_dict_keys = [
+            "rx_los",
+            "tx_fault",
+            "reset_status",
+            "power_lpmode",
+            "tx_disable",
+            "tx_disable_channel",
+            "temperature",
+            "voltage",
+            "rx1power",
+            "rx2power",
+            "rx3power",
+            "rx4power",
+            "tx1bias",
+            "tx2bias",
+            "tx3bias",
+            "tx4bias",
+            "tx1power",
+            "tx2power",
+            "tx3power",
+            "tx4power",
+        ]
 
-        self.threshold_dict_keys = ['temphighalarm', 'temphighwarning', 'templowalarm', 'templowwarning', 'vcchighalarm', 'vcchighwarning', 'vcclowalarm', 'vcclowwarning', 'rxpowerhighalarm', 'rxpowerhighwarning',
-                                    'rxpowerlowalarm', 'rxpowerlowwarning', 'txpowerhighalarm', 'txpowerhighwarning', 'txpowerlowalarm', 'txpowerlowwarning', 'txbiashighalarm', 'txbiashighwarning', 'txbiaslowalarm', 'txbiaslowwarning']
+        self.threshold_dict_keys = [
+            "temphighalarm",
+            "temphighwarning",
+            "templowalarm",
+            "templowwarning",
+            "vcchighalarm",
+            "vcchighwarning",
+            "vcclowalarm",
+            "vcclowwarning",
+            "rxpowerhighalarm",
+            "rxpowerhighwarning",
+            "rxpowerlowalarm",
+            "rxpowerlowwarning",
+            "txpowerhighalarm",
+            "txpowerhighwarning",
+            "txpowerlowalarm",
+            "txpowerlowwarning",
+            "txbiashighalarm",
+            "txbiashighwarning",
+            "txbiaslowalarm",
+            "txbiaslowwarning",
+        ]
 
         self._dom_capability_detect()
 
@@ -216,28 +292,31 @@ class Sfp(SfpBase):
 
     def __convert_string_to_num(self, value_str):
         if "-inf" in value_str:
-            return 'N/A'
+            return "N/A"
         elif "Unknown" in value_str:
-            return 'N/A'
-        elif 'dBm' in value_str:
-            t_str = value_str.rstrip('dBm')
+            return "N/A"
+        elif "dBm" in value_str:
+            t_str = value_str.rstrip("dBm")
             return float(t_str)
-        elif 'mA' in value_str:
-            t_str = value_str.rstrip('mA')
+        elif "mA" in value_str:
+            t_str = value_str.rstrip("mA")
             return float(t_str)
-        elif 'C' in value_str:
-            t_str = value_str.rstrip('C')
+        elif "C" in value_str:
+            t_str = value_str.rstrip("C")
             return float(t_str)
-        elif 'Volts' in value_str:
-            t_str = value_str.rstrip('Volts')
+        elif "Volts" in value_str:
+            t_str = value_str.rstrip("Volts")
             return float(t_str)
         else:
-            return 'N/A'
+            return "N/A"
 
     def __get_path_to_port_config_file(self):
         platform_path = "/".join([self.PLATFORM_ROOT_PATH, self.platform])
-        hwsku_path = "/".join([platform_path, self.hwsku]
-                              ) if self._api_helper.is_host() else self.PMON_HWSKU_PATH
+        hwsku_path = (
+            "/".join([platform_path, self.hwsku])
+            if self._api_helper.is_host()
+            else self.PMON_HWSKU_PATH
+        )
         return "/".join([hwsku_path, "port_config.ini"])
 
     def __read_eeprom_specific_bytes(self, offset, num_bytes):
@@ -246,10 +325,13 @@ class Sfp(SfpBase):
         for i in range(0, num_bytes):
             eeprom_raw.append("0x00")
 
-        sysfs_sfp_i2c_client_eeprom_path = self.port_to_eeprom_mapping[self.port_num]
+        sysfs_sfp_i2c_client_eeprom_path = self.port_to_eeprom_mapping[
+            self.port_num
+        ]
         try:
             sysfsfile_eeprom = open(
-                sysfs_sfp_i2c_client_eeprom_path, mode="rb", buffering=0)
+                sysfs_sfp_i2c_client_eeprom_path, mode="rb", buffering=0
+            )
             sysfsfile_eeprom.seek(offset)
             raw = sysfsfile_eeprom.read(num_bytes)
             for n in range(0, num_bytes):
@@ -284,23 +366,45 @@ class Sfp(SfpBase):
             # need to add more code for determining the capability and version compliance
             # in SFF-8636 dom capability definitions evolving with the versions.
             qsfp_dom_capability_raw = self.__read_eeprom_specific_bytes(
-                (offset + XCVR_DOM_CAPABILITY_OFFSET), XCVR_DOM_CAPABILITY_WIDTH)
+                (offset + XCVR_DOM_CAPABILITY_OFFSET),
+                XCVR_DOM_CAPABILITY_WIDTH,
+            )
             if qsfp_dom_capability_raw is not None:
-                qsfp_version_compliance_raw = self.__read_eeprom_specific_bytes(
-                    QSFP_VERSION_COMPLIANCE_OFFSET, QSFP_VERSION_COMPLIANCE_WIDTH)
+                qsfp_version_compliance_raw = (
+                    self.__read_eeprom_specific_bytes(
+                        QSFP_VERSION_COMPLIANCE_OFFSET,
+                        QSFP_VERSION_COMPLIANCE_WIDTH,
+                    )
+                )
                 qsfp_version_compliance = int(
-                    qsfp_version_compliance_raw[0], 16)
+                    qsfp_version_compliance_raw[0], 16
+                )
                 dom_capability = sfpi_obj.parse_dom_capability(
-                    qsfp_dom_capability_raw, 0)
+                    qsfp_dom_capability_raw, 0
+                )
                 if qsfp_version_compliance >= 0x08:
-                    self.dom_temp_supported = dom_capability['data']['Temp_support']['value'] == 'On'
-                    self.dom_volt_supported = dom_capability['data']['Voltage_support']['value'] == 'On'
-                    self.dom_rx_power_supported = dom_capability['data']['Rx_power_support']['value'] == 'On'
-                    self.dom_tx_power_supported = dom_capability['data']['Tx_power_support']['value'] == 'On'
+                    self.dom_temp_supported = (
+                        dom_capability["data"]["Temp_support"]["value"] == "On"
+                    )
+                    self.dom_volt_supported = (
+                        dom_capability["data"]["Voltage_support"]["value"]
+                        == "On"
+                    )
+                    self.dom_rx_power_supported = (
+                        dom_capability["data"]["Rx_power_support"]["value"]
+                        == "On"
+                    )
+                    self.dom_tx_power_supported = (
+                        dom_capability["data"]["Tx_power_support"]["value"]
+                        == "On"
+                    )
                 else:
                     self.dom_temp_supported = True
                     self.dom_volt_supported = True
-                    self.dom_rx_power_supported = dom_capability['data']['Rx_power_support']['value'] == 'On'
+                    self.dom_rx_power_supported = (
+                        dom_capability["data"]["Rx_power_support"]["value"]
+                        == "On"
+                    )
                     self.dom_tx_power_supported = True
 
                 self.dom_supported = True
@@ -309,15 +413,22 @@ class Sfp(SfpBase):
                 if sfpd_obj is None:
                     return None
                 qsfp_option_value_raw = self.__read_eeprom_specific_bytes(
-                    QSFP_OPTION_VALUE_OFFSET, QSFP_OPTION_VALUE_WIDTH)
+                    QSFP_OPTION_VALUE_OFFSET, QSFP_OPTION_VALUE_WIDTH
+                )
                 if qsfp_option_value_raw is not None:
                     optional_capability = sfpd_obj.parse_option_params(
-                        qsfp_option_value_raw, 0)
-                    self.dom_tx_disable_supported = optional_capability[
-                        'data']['TxDisable']['value'] == 'On'
+                        qsfp_option_value_raw, 0
+                    )
+                    self.dom_tx_disable_supported = (
+                        optional_capability["data"]["TxDisable"]["value"]
+                        == "On"
+                    )
                 dom_status_indicator = sfpd_obj.parse_dom_status_indicator(
-                    qsfp_version_compliance_raw, 1)
-                self.qsfp_page3_available = dom_status_indicator['data']['FlatMem']['value'] == 'Off'
+                    qsfp_version_compliance_raw, 1
+                )
+                self.qsfp_page3_available = (
+                    dom_status_indicator["data"]["FlatMem"]["value"] == "Off"
+                )
             else:
                 self.dom_supported = False
                 self.dom_temp_supported = False
@@ -332,10 +443,11 @@ class Sfp(SfpBase):
             if sfpi_obj is None:
                 return None
             sfp_dom_capability_raw = self.__read_eeprom_specific_bytes(
-                XCVR_DOM_CAPABILITY_OFFSET, XCVR_DOM_CAPABILITY_WIDTH)
+                XCVR_DOM_CAPABILITY_OFFSET, XCVR_DOM_CAPABILITY_WIDTH
+            )
             if sfp_dom_capability_raw is not None:
                 sfp_dom_capability = int(sfp_dom_capability_raw[0], 16)
-                self.dom_supported = (sfp_dom_capability & 0x40 != 0)
+                self.dom_supported = sfp_dom_capability & 0x40 != 0
                 if self.dom_supported:
                     self.dom_temp_supported = True
                     self.dom_volt_supported = True
@@ -354,7 +466,8 @@ class Sfp(SfpBase):
                     self.dom_tx_power_supported = False
                     self.calibration = 0
                 self.dom_tx_disable_supported = (
-                    int(sfp_dom_capability_raw[1], 16) & 0x40 != 0)
+                    int(sfp_dom_capability_raw[1], 16) & 0x40 != 0
+                )
         else:
             self.dom_supported = False
             self.dom_temp_supported = False
@@ -388,9 +501,9 @@ class Sfp(SfpBase):
         vendor_oui                 |1*255VCHAR     |vendor OUI
         application_advertisement  |1*255VCHAR     |supported applications advertisement *
         ========================================================================
-         """
+        """
         compliance_code_dict = {}
-        transceiver_info_dict = dict.fromkeys(self.info_dict_keys, 'N/A')
+        transceiver_info_dict = dict.fromkeys(self.info_dict_keys, "N/A")
         if not self.get_presence():
             return transceiver_info_dict
 
@@ -406,61 +519,80 @@ class Sfp(SfpBase):
                 return None
 
             sfp_type_raw = self.__read_eeprom_specific_bytes(
-                (offset + OSFP_TYPE_OFFSET), XCVR_TYPE_WIDTH)
+                (offset + OSFP_TYPE_OFFSET), XCVR_TYPE_WIDTH
+            )
             if sfp_type_raw is not None:
                 sfp_type_data = sfpi_obj.parse_sfp_type(sfp_type_raw, 0)
             else:
                 return None
             sfp_vendor_name_raw = self.__read_eeprom_specific_bytes(
-                (offset + OSFP_VENDOR_NAME_OFFSET), XCVR_VENDOR_NAME_WIDTH)
+                (offset + OSFP_VENDOR_NAME_OFFSET), XCVR_VENDOR_NAME_WIDTH
+            )
             if sfp_vendor_name_raw is not None:
                 sfp_vendor_name_data = sfpi_obj.parse_vendor_name(
-                    sfp_vendor_name_raw, 0)
+                    sfp_vendor_name_raw, 0
+                )
             else:
                 return None
 
             sfp_vendor_pn_raw = self.__read_eeprom_specific_bytes(
-                (offset + OSFP_VENDOR_PN_OFFSET), XCVR_VENDOR_PN_WIDTH)
+                (offset + OSFP_VENDOR_PN_OFFSET), XCVR_VENDOR_PN_WIDTH
+            )
             if sfp_vendor_pn_raw is not None:
                 sfp_vendor_pn_data = sfpi_obj.parse_vendor_pn(
-                    sfp_vendor_pn_raw, 0)
+                    sfp_vendor_pn_raw, 0
+                )
             else:
                 return None
 
             sfp_vendor_rev_raw = self.__read_eeprom_specific_bytes(
-                (offset + OSFP_HW_REV_OFFSET), vendor_rev_width)
+                (offset + OSFP_HW_REV_OFFSET), vendor_rev_width
+            )
             if sfp_vendor_rev_raw is not None:
                 sfp_vendor_rev_data = sfpi_obj.parse_vendor_rev(
-                    sfp_vendor_rev_raw, 0)
+                    sfp_vendor_rev_raw, 0
+                )
             else:
                 return None
 
             sfp_vendor_sn_raw = self.__read_eeprom_specific_bytes(
-                (offset + OSFP_VENDOR_SN_OFFSET), XCVR_VENDOR_SN_WIDTH)
+                (offset + OSFP_VENDOR_SN_OFFSET), XCVR_VENDOR_SN_WIDTH
+            )
             if sfp_vendor_sn_raw is not None:
                 sfp_vendor_sn_data = sfpi_obj.parse_vendor_sn(
-                    sfp_vendor_sn_raw, 0)
+                    sfp_vendor_sn_raw, 0
+                )
             else:
                 return None
 
-            transceiver_info_dict['type'] = sfp_type_data['data']['type']['value']
-            transceiver_info_dict['manufacturer'] = sfp_vendor_name_data['data']['Vendor Name']['value']
-            transceiver_info_dict['model'] = sfp_vendor_pn_data['data']['Vendor PN']['value']
-            transceiver_info_dict['hardware_rev'] = sfp_vendor_rev_data['data']['Vendor Rev']['value']
-            transceiver_info_dict['serial'] = sfp_vendor_sn_data['data']['Vendor SN']['value']
-            transceiver_info_dict['vendor_oui'] = 'N/A'
-            transceiver_info_dict['vendor_date'] = 'N/A'
-            transceiver_info_dict['connector'] = 'N/A'
-            transceiver_info_dict['encoding'] = 'N/A'
-            transceiver_info_dict['ext_identifier'] = 'N/A'
-            transceiver_info_dict['ext_rateselect_compliance'] = 'N/A'
-            transceiver_info_dict['cable_type'] = 'N/A'
-            transceiver_info_dict['cable_length'] = 'N/A'
-            transceiver_info_dict['specification_compliance'] = '{}'
-            transceiver_info_dict['nominal_bit_rate'] = 'N/A'
-            transceiver_info_dict['type_abbrv_name'] = 'N/A'
-            transceiver_info_dict['vendor_rev'] = 'N/A'
-            transceiver_info_dict['application_advertisement'] = 'N/A'
+            transceiver_info_dict["type"] = sfp_type_data["data"]["type"][
+                "value"
+            ]
+            transceiver_info_dict["manufacturer"] = sfp_vendor_name_data[
+                "data"
+            ]["Vendor Name"]["value"]
+            transceiver_info_dict["model"] = sfp_vendor_pn_data["data"][
+                "Vendor PN"
+            ]["value"]
+            transceiver_info_dict["hardware_rev"] = sfp_vendor_rev_data[
+                "data"
+            ]["Vendor Rev"]["value"]
+            transceiver_info_dict["serial"] = sfp_vendor_sn_data["data"][
+                "Vendor SN"
+            ]["value"]
+            transceiver_info_dict["vendor_oui"] = "N/A"
+            transceiver_info_dict["vendor_date"] = "N/A"
+            transceiver_info_dict["connector"] = "N/A"
+            transceiver_info_dict["encoding"] = "N/A"
+            transceiver_info_dict["ext_identifier"] = "N/A"
+            transceiver_info_dict["ext_rateselect_compliance"] = "N/A"
+            transceiver_info_dict["cable_type"] = "N/A"
+            transceiver_info_dict["cable_length"] = "N/A"
+            transceiver_info_dict["specification_compliance"] = "{}"
+            transceiver_info_dict["nominal_bit_rate"] = "N/A"
+            transceiver_info_dict["type_abbrv_name"] = "N/A"
+            transceiver_info_dict["vendor_rev"] = "N/A"
+            transceiver_info_dict["application_advertisement"] = "N/A"
 
         else:
             if self.sfp_type == QSFP_TYPE:
@@ -483,89 +615,142 @@ class Sfp(SfpBase):
                     print("Error: sfp_object open failed")
                     return None
             sfp_interface_bulk_raw = self.__read_eeprom_specific_bytes(
-                offset + XCVR_INTERFACE_DATA_START, XCVR_INTERFACE_DATA_SIZE)
+                offset + XCVR_INTERFACE_DATA_START, XCVR_INTERFACE_DATA_SIZE
+            )
             if sfp_interface_bulk_raw is None:
                 return None
 
             start = XCVR_INTFACE_BULK_OFFSET - XCVR_INTERFACE_DATA_START
             end = start + interface_info_bulk_width
             sfp_interface_bulk_data = sfpi_obj.parse_sfp_info_bulk(
-                sfp_interface_bulk_raw[start: end], 0)
+                sfp_interface_bulk_raw[start:end], 0
+            )
 
             start = XCVR_VENDOR_NAME_OFFSET - XCVR_INTERFACE_DATA_START
             end = start + XCVR_VENDOR_NAME_WIDTH
             sfp_vendor_name_data = sfpi_obj.parse_vendor_name(
-                sfp_interface_bulk_raw[start: end], 0)
+                sfp_interface_bulk_raw[start:end], 0
+            )
 
             start = XCVR_VENDOR_PN_OFFSET - XCVR_INTERFACE_DATA_START
             end = start + XCVR_VENDOR_PN_WIDTH
             sfp_vendor_pn_data = sfpi_obj.parse_vendor_pn(
-                sfp_interface_bulk_raw[start: end], 0)
+                sfp_interface_bulk_raw[start:end], 0
+            )
 
             start = XCVR_HW_REV_OFFSET - XCVR_INTERFACE_DATA_START
             end = start + vendor_rev_width
             sfp_vendor_rev_data = sfpi_obj.parse_vendor_rev(
-                sfp_interface_bulk_raw[start: end], 0)
+                sfp_interface_bulk_raw[start:end], 0
+            )
 
             start = XCVR_VENDOR_SN_OFFSET - XCVR_INTERFACE_DATA_START
             end = start + XCVR_VENDOR_SN_WIDTH
             sfp_vendor_sn_data = sfpi_obj.parse_vendor_sn(
-                sfp_interface_bulk_raw[start: end], 0)
+                sfp_interface_bulk_raw[start:end], 0
+            )
 
             start = XCVR_VENDOR_OUI_OFFSET - XCVR_INTERFACE_DATA_START
             end = start + XCVR_VENDOR_OUI_WIDTH
             sfp_vendor_oui_data = sfpi_obj.parse_vendor_oui(
-                sfp_interface_bulk_raw[start: end], 0)
+                sfp_interface_bulk_raw[start:end], 0
+            )
 
             start = XCVR_VENDOR_DATE_OFFSET - XCVR_INTERFACE_DATA_START
             end = start + XCVR_VENDOR_DATE_WIDTH
             sfp_vendor_date_data = sfpi_obj.parse_vendor_date(
-                sfp_interface_bulk_raw[start: end], 0)
-            transceiver_info_dict['type'] = sfp_interface_bulk_data['data']['type']['value']
-            transceiver_info_dict['manufacturer'] = sfp_vendor_name_data['data']['Vendor Name']['value']
-            transceiver_info_dict['model'] = sfp_vendor_pn_data['data']['Vendor PN']['value']
-            transceiver_info_dict['hardware_rev'] = sfp_vendor_rev_data['data']['Vendor Rev']['value']
-            transceiver_info_dict['serial'] = sfp_vendor_sn_data['data']['Vendor SN']['value']
-            transceiver_info_dict['vendor_oui'] = sfp_vendor_oui_data['data']['Vendor OUI']['value']
-            transceiver_info_dict['vendor_date'] = sfp_vendor_date_data[
-                'data']['VendorDataCode(YYYY-MM-DD Lot)']['value']
-            transceiver_info_dict['connector'] = sfp_interface_bulk_data['data']['Connector']['value']
-            transceiver_info_dict['encoding'] = sfp_interface_bulk_data['data']['EncodingCodes']['value']
-            transceiver_info_dict['ext_identifier'] = sfp_interface_bulk_data['data']['Extended Identifier']['value']
-            transceiver_info_dict['ext_rateselect_compliance'] = sfp_interface_bulk_data['data']['RateIdentifier']['value']
-            transceiver_info_dict['type_abbrv_name'] = 'N/A'
-            transceiver_info_dict['vendor_rev'] = 'N/A'
-            transceiver_info_dict['application_advertisement'] = 'N/A'
+                sfp_interface_bulk_raw[start:end], 0
+            )
+            transceiver_info_dict["type"] = sfp_interface_bulk_data["data"][
+                "type"
+            ]["value"]
+            transceiver_info_dict["manufacturer"] = sfp_vendor_name_data[
+                "data"
+            ]["Vendor Name"]["value"]
+            transceiver_info_dict["model"] = sfp_vendor_pn_data["data"][
+                "Vendor PN"
+            ]["value"]
+            transceiver_info_dict["hardware_rev"] = sfp_vendor_rev_data[
+                "data"
+            ]["Vendor Rev"]["value"]
+            transceiver_info_dict["serial"] = sfp_vendor_sn_data["data"][
+                "Vendor SN"
+            ]["value"]
+            transceiver_info_dict["vendor_oui"] = sfp_vendor_oui_data["data"][
+                "Vendor OUI"
+            ]["value"]
+            transceiver_info_dict["vendor_date"] = sfp_vendor_date_data[
+                "data"
+            ]["VendorDataCode(YYYY-MM-DD Lot)"]["value"]
+            transceiver_info_dict["connector"] = sfp_interface_bulk_data[
+                "data"
+            ]["Connector"]["value"]
+            transceiver_info_dict["encoding"] = sfp_interface_bulk_data[
+                "data"
+            ]["EncodingCodes"]["value"]
+            transceiver_info_dict["ext_identifier"] = sfp_interface_bulk_data[
+                "data"
+            ]["Extended Identifier"]["value"]
+            transceiver_info_dict[
+                "ext_rateselect_compliance"
+            ] = sfp_interface_bulk_data["data"]["RateIdentifier"]["value"]
+            transceiver_info_dict["type_abbrv_name"] = "N/A"
+            transceiver_info_dict["vendor_rev"] = "N/A"
+            transceiver_info_dict["application_advertisement"] = "N/A"
             if self.sfp_type == QSFP_TYPE:
                 for key in qsfp_cable_length_tup:
-                    if key in sfp_interface_bulk_data['data']:
-                        transceiver_info_dict['cable_type'] = key
-                        transceiver_info_dict['cable_length'] = str(
-                            sfp_interface_bulk_data['data'][key]['value'])
+                    if key in sfp_interface_bulk_data["data"]:
+                        transceiver_info_dict["cable_type"] = key
+                        transceiver_info_dict["cable_length"] = str(
+                            sfp_interface_bulk_data["data"][key]["value"]
+                        )
 
                 for key in qsfp_compliance_code_tup:
-                    if key in sfp_interface_bulk_data['data']['Specification compliance']['value']:
-                        compliance_code_dict[key] = sfp_interface_bulk_data['data']['Specification compliance']['value'][key]['value']
-                transceiver_info_dict['specification_compliance'] = str(
-                    compliance_code_dict)
+                    if (
+                        key
+                        in sfp_interface_bulk_data["data"][
+                            "Specification compliance"
+                        ]["value"]
+                    ):
+                        compliance_code_dict[key] = sfp_interface_bulk_data[
+                            "data"
+                        ]["Specification compliance"]["value"][key]["value"]
+                transceiver_info_dict["specification_compliance"] = str(
+                    compliance_code_dict
+                )
 
-                transceiver_info_dict['nominal_bit_rate'] = str(
-                    sfp_interface_bulk_data['data']['Nominal Bit Rate(100Mbs)']['value'])
+                transceiver_info_dict["nominal_bit_rate"] = str(
+                    sfp_interface_bulk_data["data"][
+                        "Nominal Bit Rate(100Mbs)"
+                    ]["value"]
+                )
             else:
                 for key in sfp_cable_length_tup:
-                    if key in sfp_interface_bulk_data['data']:
-                        transceiver_info_dict['cable_type'] = key
-                        transceiver_info_dict['cable_length'] = str(
-                            sfp_interface_bulk_data['data'][key]['value'])
+                    if key in sfp_interface_bulk_data["data"]:
+                        transceiver_info_dict["cable_type"] = key
+                        transceiver_info_dict["cable_length"] = str(
+                            sfp_interface_bulk_data["data"][key]["value"]
+                        )
 
                 for key in sfp_compliance_code_tup:
-                    if key in sfp_interface_bulk_data['data']['Specification compliance']['value']:
-                        compliance_code_dict[key] = sfp_interface_bulk_data['data']['Specification compliance']['value'][key]['value']
-                transceiver_info_dict['specification_compliance'] = str(
-                    compliance_code_dict)
+                    if (
+                        key
+                        in sfp_interface_bulk_data["data"][
+                            "Specification compliance"
+                        ]["value"]
+                    ):
+                        compliance_code_dict[key] = sfp_interface_bulk_data[
+                            "data"
+                        ]["Specification compliance"]["value"][key]["value"]
+                transceiver_info_dict["specification_compliance"] = str(
+                    compliance_code_dict
+                )
 
-                transceiver_info_dict['nominal_bit_rate'] = str(
-                    sfp_interface_bulk_data['data']['NominalSignallingRate(UnitsOf100Mbd)']['value'])
+                transceiver_info_dict["nominal_bit_rate"] = str(
+                    sfp_interface_bulk_data["data"][
+                        "NominalSignallingRate(UnitsOf100Mbd)"
+                    ]["value"]
+                )
 
         return transceiver_info_dict
 
@@ -594,7 +779,7 @@ class Sfp(SfpBase):
                                    |               |for example, tx2power stands for tx power of channel 2.
         ========================================================================
         """
-        transceiver_dom_info_dict = dict.fromkeys(self.dom_dict_keys, 'N/A')
+        transceiver_dom_info_dict = dict.fromkeys(self.dom_dict_keys, "N/A")
 
         if self.sfp_type == OSFP_TYPE:
             pass
@@ -609,7 +794,8 @@ class Sfp(SfpBase):
                 return transceiver_dom_info_dict
 
             dom_data_raw = self.__read_eeprom_specific_bytes(
-                (offset + QSFP_DOM_BULK_DATA_START), QSFP_DOM_BULK_DATA_SIZE)
+                (offset + QSFP_DOM_BULK_DATA_START), QSFP_DOM_BULK_DATA_SIZE
+            )
             if dom_data_raw is None:
                 return transceiver_dom_info_dict
 
@@ -617,55 +803,98 @@ class Sfp(SfpBase):
                 start = QSFP_TEMPE_OFFSET - QSFP_DOM_BULK_DATA_START
                 end = start + QSFP_TEMPE_WIDTH
                 dom_temperature_data = sfpd_obj.parse_temperature(
-                    dom_data_raw[start: end], 0)
+                    dom_data_raw[start:end], 0
+                )
                 temp = self.__convert_string_to_num(
-                    dom_temperature_data['data']['Temperature']['value'])
+                    dom_temperature_data["data"]["Temperature"]["value"]
+                )
                 if temp is not None:
-                    transceiver_dom_info_dict['temperature'] = temp
+                    transceiver_dom_info_dict["temperature"] = temp
 
             if self.dom_volt_supported:
                 start = QSFP_VOLT_OFFSET - QSFP_DOM_BULK_DATA_START
                 end = start + QSFP_VOLT_WIDTH
                 dom_voltage_data = sfpd_obj.parse_voltage(
-                    dom_data_raw[start: end], 0)
+                    dom_data_raw[start:end], 0
+                )
                 volt = self.__convert_string_to_num(
-                    dom_voltage_data['data']['Vcc']['value'])
+                    dom_voltage_data["data"]["Vcc"]["value"]
+                )
                 if volt is not None:
-                    transceiver_dom_info_dict['voltage'] = volt
+                    transceiver_dom_info_dict["voltage"] = volt
 
             start = QSFP_CHANNL_MON_OFFSET - QSFP_DOM_BULK_DATA_START
             end = start + QSFP_CHANNL_MON_WITH_TX_POWER_WIDTH
-            dom_channel_monitor_data = sfpd_obj.parse_channel_monitor_params_with_tx_power(
-                dom_data_raw[start: end], 0)
+            dom_channel_monitor_data = (
+                sfpd_obj.parse_channel_monitor_params_with_tx_power(
+                    dom_data_raw[start:end], 0
+                )
+            )
 
             if self.dom_tx_power_supported:
-                transceiver_dom_info_dict['tx1power'] = self.__convert_string_to_num(
-                    dom_channel_monitor_data['data']['TX1Power']['value'])
-                transceiver_dom_info_dict['tx2power'] = self.__convert_string_to_num(
-                    dom_channel_monitor_data['data']['TX2Power']['value'])
-                transceiver_dom_info_dict['tx3power'] = self.__convert_string_to_num(
-                    dom_channel_monitor_data['data']['TX3Power']['value'])
-                transceiver_dom_info_dict['tx4power'] = self.__convert_string_to_num(
-                    dom_channel_monitor_data['data']['TX4Power']['value'])
+                transceiver_dom_info_dict[
+                    "tx1power"
+                ] = self.__convert_string_to_num(
+                    dom_channel_monitor_data["data"]["TX1Power"]["value"]
+                )
+                transceiver_dom_info_dict[
+                    "tx2power"
+                ] = self.__convert_string_to_num(
+                    dom_channel_monitor_data["data"]["TX2Power"]["value"]
+                )
+                transceiver_dom_info_dict[
+                    "tx3power"
+                ] = self.__convert_string_to_num(
+                    dom_channel_monitor_data["data"]["TX3Power"]["value"]
+                )
+                transceiver_dom_info_dict[
+                    "tx4power"
+                ] = self.__convert_string_to_num(
+                    dom_channel_monitor_data["data"]["TX4Power"]["value"]
+                )
 
             if self.dom_rx_power_supported:
-                transceiver_dom_info_dict['rx1power'] = self.__convert_string_to_num(
-                    dom_channel_monitor_data['data']['RX1Power']['value'])
-                transceiver_dom_info_dict['rx2power'] = self.__convert_string_to_num(
-                    dom_channel_monitor_data['data']['RX2Power']['value'])
-                transceiver_dom_info_dict['rx3power'] = self.__convert_string_to_num(
-                    dom_channel_monitor_data['data']['RX3Power']['value'])
-                transceiver_dom_info_dict['rx4power'] = self.__convert_string_to_num(
-                    dom_channel_monitor_data['data']['RX4Power']['value'])
+                transceiver_dom_info_dict[
+                    "rx1power"
+                ] = self.__convert_string_to_num(
+                    dom_channel_monitor_data["data"]["RX1Power"]["value"]
+                )
+                transceiver_dom_info_dict[
+                    "rx2power"
+                ] = self.__convert_string_to_num(
+                    dom_channel_monitor_data["data"]["RX2Power"]["value"]
+                )
+                transceiver_dom_info_dict[
+                    "rx3power"
+                ] = self.__convert_string_to_num(
+                    dom_channel_monitor_data["data"]["RX3Power"]["value"]
+                )
+                transceiver_dom_info_dict[
+                    "rx4power"
+                ] = self.__convert_string_to_num(
+                    dom_channel_monitor_data["data"]["RX4Power"]["value"]
+                )
 
-            transceiver_dom_info_dict['tx1bias'] = self.__convert_string_to_num(
-                dom_channel_monitor_data['data']['TX1Bias']['value'])
-            transceiver_dom_info_dict['tx2bias'] = self.__convert_string_to_num(
-                dom_channel_monitor_data['data']['TX2Bias']['value'])
-            transceiver_dom_info_dict['tx3bias'] = self.__convert_string_to_num(
-                dom_channel_monitor_data['data']['TX3Bias']['value'])
-            transceiver_dom_info_dict['tx4bias'] = self.__convert_string_to_num(
-                dom_channel_monitor_data['data']['TX4Bias']['value'])
+            transceiver_dom_info_dict[
+                "tx1bias"
+            ] = self.__convert_string_to_num(
+                dom_channel_monitor_data["data"]["TX1Bias"]["value"]
+            )
+            transceiver_dom_info_dict[
+                "tx2bias"
+            ] = self.__convert_string_to_num(
+                dom_channel_monitor_data["data"]["TX2Bias"]["value"]
+            )
+            transceiver_dom_info_dict[
+                "tx3bias"
+            ] = self.__convert_string_to_num(
+                dom_channel_monitor_data["data"]["TX3Bias"]["value"]
+            )
+            transceiver_dom_info_dict[
+                "tx4bias"
+            ] = self.__convert_string_to_num(
+                dom_channel_monitor_data["data"]["TX4Bias"]["value"]
+            )
 
         else:
             if not self.dom_supported:
@@ -678,38 +907,57 @@ class Sfp(SfpBase):
             sfpd_obj._calibration_type = self.calibration
 
             dom_data_raw = self.__read_eeprom_specific_bytes(
-                (offset + SFP_DOM_BULK_DATA_START), SFP_DOM_BULK_DATA_SIZE)
+                (offset + SFP_DOM_BULK_DATA_START), SFP_DOM_BULK_DATA_SIZE
+            )
 
             start = SFP_TEMPE_OFFSET - SFP_DOM_BULK_DATA_START
             end = start + SFP_TEMPE_WIDTH
             dom_temperature_data = sfpd_obj.parse_temperature(
-                dom_data_raw[start: end], 0)
+                dom_data_raw[start:end], 0
+            )
 
             start = SFP_VOLT_OFFSET - SFP_DOM_BULK_DATA_START
             end = start + SFP_VOLT_WIDTH
             dom_voltage_data = sfpd_obj.parse_voltage(
-                dom_data_raw[start: end], 0)
+                dom_data_raw[start:end], 0
+            )
 
             start = SFP_CHANNL_MON_OFFSET - SFP_DOM_BULK_DATA_START
             end = start + SFP_CHANNL_MON_WIDTH
             dom_channel_monitor_data = sfpd_obj.parse_channel_monitor_params(
-                dom_data_raw[start: end], 0)
+                dom_data_raw[start:end], 0
+            )
 
-            transceiver_dom_info_dict['temperature'] = self.__convert_string_to_num(
-                dom_temperature_data['data']['Temperature']['value'])
-            transceiver_dom_info_dict['voltage'] = self.__convert_string_to_num(
-                dom_voltage_data['data']['Vcc']['value'])
-            transceiver_dom_info_dict['rx1power'] = self.__convert_string_to_num(
-                dom_channel_monitor_data['data']['RXPower']['value'])
-            transceiver_dom_info_dict['tx1bias'] = self.__convert_string_to_num(
-                dom_channel_monitor_data['data']['TXBias']['value'])
-            transceiver_dom_info_dict['tx1power'] = self.__convert_string_to_num(
-                dom_channel_monitor_data['data']['TXPower']['value'])
+            transceiver_dom_info_dict[
+                "temperature"
+            ] = self.__convert_string_to_num(
+                dom_temperature_data["data"]["Temperature"]["value"]
+            )
+            transceiver_dom_info_dict[
+                "voltage"
+            ] = self.__convert_string_to_num(
+                dom_voltage_data["data"]["Vcc"]["value"]
+            )
+            transceiver_dom_info_dict[
+                "rx1power"
+            ] = self.__convert_string_to_num(
+                dom_channel_monitor_data["data"]["RXPower"]["value"]
+            )
+            transceiver_dom_info_dict[
+                "tx1bias"
+            ] = self.__convert_string_to_num(
+                dom_channel_monitor_data["data"]["TXBias"]["value"]
+            )
+            transceiver_dom_info_dict[
+                "tx1power"
+            ] = self.__convert_string_to_num(
+                dom_channel_monitor_data["data"]["TXPower"]["value"]
+            )
 
-        transceiver_dom_info_dict['rx_los'] = self.get_rx_los()
-        transceiver_dom_info_dict['tx_fault'] = self.get_tx_fault()
-        transceiver_dom_info_dict['reset_status'] = self.get_reset_status()
-        transceiver_dom_info_dict['lp_mode'] = self.get_lpmode()
+        transceiver_dom_info_dict["rx_los"] = self.get_rx_los()
+        transceiver_dom_info_dict["tx_fault"] = self.get_tx_fault()
+        transceiver_dom_info_dict["reset_status"] = self.get_reset_status()
+        transceiver_dom_info_dict["lp_mode"] = self.get_lpmode()
 
         return transceiver_dom_info_dict
 
@@ -744,7 +992,8 @@ class Sfp(SfpBase):
         ========================================================================
         """
         transceiver_dom_threshold_info_dict = dict.fromkeys(
-            self.threshold_dict_keys, 'N/A')
+            self.threshold_dict_keys, "N/A"
+        )
 
         if self.sfp_type == OSFP_TYPE:
             pass
@@ -761,41 +1010,99 @@ class Sfp(SfpBase):
                 return transceiver_dom_threshold_info_dict
 
             dom_module_threshold_raw = self.__read_eeprom_specific_bytes(
-                (offset + QSFP_MODULE_THRESHOLD_OFFSET), QSFP_MODULE_THRESHOLD_WIDTH)
+                (offset + QSFP_MODULE_THRESHOLD_OFFSET),
+                QSFP_MODULE_THRESHOLD_WIDTH,
+            )
             if dom_module_threshold_raw is None:
                 return transceiver_dom_threshold_info_dict
 
             dom_module_threshold_data = sfpd_obj.parse_module_threshold_values(
-                dom_module_threshold_raw, 0)
+                dom_module_threshold_raw, 0
+            )
 
-            dom_channel_threshold_raw = self.__read_eeprom_specific_bytes((offset + QSFP_CHANNL_THRESHOLD_OFFSET),
-                                                                          QSFP_CHANNL_THRESHOLD_WIDTH)
+            dom_channel_threshold_raw = self.__read_eeprom_specific_bytes(
+                (offset + QSFP_CHANNL_THRESHOLD_OFFSET),
+                QSFP_CHANNL_THRESHOLD_WIDTH,
+            )
             if dom_channel_threshold_raw is None:
                 return transceiver_dom_threshold_info_dict
-            dom_channel_threshold_data = sfpd_obj.parse_channel_threshold_values(
-                dom_channel_threshold_raw, 0)
+            dom_channel_threshold_data = (
+                sfpd_obj.parse_channel_threshold_values(
+                    dom_channel_threshold_raw, 0
+                )
+            )
 
             # Threshold Data
-            transceiver_dom_threshold_info_dict['temphighalarm'] = dom_module_threshold_data['data']['TempHighAlarm']['value']
-            transceiver_dom_threshold_info_dict['temphighwarning'] = dom_module_threshold_data['data']['TempHighWarning']['value']
-            transceiver_dom_threshold_info_dict['templowalarm'] = dom_module_threshold_data['data']['TempLowAlarm']['value']
-            transceiver_dom_threshold_info_dict['templowwarning'] = dom_module_threshold_data['data']['TempLowWarning']['value']
-            transceiver_dom_threshold_info_dict['vcchighalarm'] = dom_module_threshold_data['data']['VccHighAlarm']['value']
-            transceiver_dom_threshold_info_dict['vcchighwarning'] = dom_module_threshold_data['data']['VccHighWarning']['value']
-            transceiver_dom_threshold_info_dict['vcclowalarm'] = dom_module_threshold_data['data']['VccLowAlarm']['value']
-            transceiver_dom_threshold_info_dict['vcclowwarning'] = dom_module_threshold_data['data']['VccLowWarning']['value']
-            transceiver_dom_threshold_info_dict['rxpowerhighalarm'] = dom_channel_threshold_data['data']['RxPowerHighAlarm']['value']
-            transceiver_dom_threshold_info_dict['rxpowerhighwarning'] = dom_channel_threshold_data['data']['RxPowerHighWarning']['value']
-            transceiver_dom_threshold_info_dict['rxpowerlowalarm'] = dom_channel_threshold_data['data']['RxPowerLowAlarm']['value']
-            transceiver_dom_threshold_info_dict['rxpowerlowwarning'] = dom_channel_threshold_data['data']['RxPowerLowWarning']['value']
-            transceiver_dom_threshold_info_dict['txbiashighalarm'] = dom_channel_threshold_data['data']['TxBiasHighAlarm']['value']
-            transceiver_dom_threshold_info_dict['txbiashighwarning'] = dom_channel_threshold_data['data']['TxBiasHighWarning']['value']
-            transceiver_dom_threshold_info_dict['txbiaslowalarm'] = dom_channel_threshold_data['data']['TxBiasLowAlarm']['value']
-            transceiver_dom_threshold_info_dict['txbiaslowwarning'] = dom_channel_threshold_data['data']['TxBiasLowWarning']['value']
-            transceiver_dom_threshold_info_dict['txpowerhighalarm'] = dom_channel_threshold_data['data']['TxPowerHighAlarm']['value']
-            transceiver_dom_threshold_info_dict['txpowerhighwarning'] = dom_channel_threshold_data['data']['TxPowerHighWarning']['value']
-            transceiver_dom_threshold_info_dict['txpowerlowalarm'] = dom_channel_threshold_data['data']['TxPowerLowAlarm']['value']
-            transceiver_dom_threshold_info_dict['txpowerlowwarning'] = dom_channel_threshold_data['data']['TxPowerLowWarning']['value']
+            transceiver_dom_threshold_info_dict[
+                "temphighalarm"
+            ] = dom_module_threshold_data["data"]["TempHighAlarm"]["value"]
+            transceiver_dom_threshold_info_dict[
+                "temphighwarning"
+            ] = dom_module_threshold_data["data"]["TempHighWarning"]["value"]
+            transceiver_dom_threshold_info_dict[
+                "templowalarm"
+            ] = dom_module_threshold_data["data"]["TempLowAlarm"]["value"]
+            transceiver_dom_threshold_info_dict[
+                "templowwarning"
+            ] = dom_module_threshold_data["data"]["TempLowWarning"]["value"]
+            transceiver_dom_threshold_info_dict[
+                "vcchighalarm"
+            ] = dom_module_threshold_data["data"]["VccHighAlarm"]["value"]
+            transceiver_dom_threshold_info_dict[
+                "vcchighwarning"
+            ] = dom_module_threshold_data["data"]["VccHighWarning"]["value"]
+            transceiver_dom_threshold_info_dict[
+                "vcclowalarm"
+            ] = dom_module_threshold_data["data"]["VccLowAlarm"]["value"]
+            transceiver_dom_threshold_info_dict[
+                "vcclowwarning"
+            ] = dom_module_threshold_data["data"]["VccLowWarning"]["value"]
+            transceiver_dom_threshold_info_dict[
+                "rxpowerhighalarm"
+            ] = dom_channel_threshold_data["data"]["RxPowerHighAlarm"]["value"]
+            transceiver_dom_threshold_info_dict[
+                "rxpowerhighwarning"
+            ] = dom_channel_threshold_data["data"]["RxPowerHighWarning"][
+                "value"
+            ]
+            transceiver_dom_threshold_info_dict[
+                "rxpowerlowalarm"
+            ] = dom_channel_threshold_data["data"]["RxPowerLowAlarm"]["value"]
+            transceiver_dom_threshold_info_dict[
+                "rxpowerlowwarning"
+            ] = dom_channel_threshold_data["data"]["RxPowerLowWarning"][
+                "value"
+            ]
+            transceiver_dom_threshold_info_dict[
+                "txbiashighalarm"
+            ] = dom_channel_threshold_data["data"]["TxBiasHighAlarm"]["value"]
+            transceiver_dom_threshold_info_dict[
+                "txbiashighwarning"
+            ] = dom_channel_threshold_data["data"]["TxBiasHighWarning"][
+                "value"
+            ]
+            transceiver_dom_threshold_info_dict[
+                "txbiaslowalarm"
+            ] = dom_channel_threshold_data["data"]["TxBiasLowAlarm"]["value"]
+            transceiver_dom_threshold_info_dict[
+                "txbiaslowwarning"
+            ] = dom_channel_threshold_data["data"]["TxBiasLowWarning"]["value"]
+            transceiver_dom_threshold_info_dict[
+                "txpowerhighalarm"
+            ] = dom_channel_threshold_data["data"]["TxPowerHighAlarm"]["value"]
+            transceiver_dom_threshold_info_dict[
+                "txpowerhighwarning"
+            ] = dom_channel_threshold_data["data"]["TxPowerHighWarning"][
+                "value"
+            ]
+            transceiver_dom_threshold_info_dict[
+                "txpowerlowalarm"
+            ] = dom_channel_threshold_data["data"]["TxPowerLowAlarm"]["value"]
+            transceiver_dom_threshold_info_dict[
+                "txpowerlowwarning"
+            ] = dom_channel_threshold_data["data"]["TxPowerLowWarning"][
+                "value"
+            ]
 
         else:
             offset = SFP_MODULE_ADDRA2_OFFSET
@@ -807,40 +1114,93 @@ class Sfp(SfpBase):
             if sfpd_obj is None:
                 return transceiver_dom_threshold_info_dict
 
-            dom_module_threshold_raw = self.__read_eeprom_specific_bytes((offset + SFP_MODULE_THRESHOLD_OFFSET),
-                                                                         SFP_MODULE_THRESHOLD_WIDTH)
+            dom_module_threshold_raw = self.__read_eeprom_specific_bytes(
+                (offset + SFP_MODULE_THRESHOLD_OFFSET),
+                SFP_MODULE_THRESHOLD_WIDTH,
+            )
             if dom_module_threshold_raw is not None:
-                dom_module_threshold_data = sfpd_obj.parse_alarm_warning_threshold(
-                    dom_module_threshold_raw, 0)
+                dom_module_threshold_data = (
+                    sfpd_obj.parse_alarm_warning_threshold(
+                        dom_module_threshold_raw, 0
+                    )
+                )
             else:
                 return transceiver_dom_threshold_info_dict
 
             # Threshold Data
-            transceiver_dom_threshold_info_dict['temphighalarm'] = dom_module_threshold_data['data']['TempHighAlarm']['value']
-            transceiver_dom_threshold_info_dict['templowalarm'] = dom_module_threshold_data['data']['TempLowAlarm']['value']
-            transceiver_dom_threshold_info_dict['temphighwarning'] = dom_module_threshold_data['data']['TempHighWarning']['value']
-            transceiver_dom_threshold_info_dict['templowwarning'] = dom_module_threshold_data['data']['TempLowWarning']['value']
-            transceiver_dom_threshold_info_dict['vcchighalarm'] = dom_module_threshold_data['data']['VoltageHighAlarm']['value']
-            transceiver_dom_threshold_info_dict['vcclowalarm'] = dom_module_threshold_data['data']['VoltageLowAlarm']['value']
-            transceiver_dom_threshold_info_dict['vcchighwarning'] = dom_module_threshold_data[
-                'data']['VoltageHighWarning']['value']
-            transceiver_dom_threshold_info_dict['vcclowwarning'] = dom_module_threshold_data['data']['VoltageLowWarning']['value']
-            transceiver_dom_threshold_info_dict['txbiashighalarm'] = dom_module_threshold_data['data']['BiasHighAlarm']['value']
-            transceiver_dom_threshold_info_dict['txbiaslowalarm'] = dom_module_threshold_data['data']['BiasLowAlarm']['value']
-            transceiver_dom_threshold_info_dict['txbiashighwarning'] = dom_module_threshold_data['data']['BiasHighWarning']['value']
-            transceiver_dom_threshold_info_dict['txbiaslowwarning'] = dom_module_threshold_data['data']['BiasLowWarning']['value']
-            transceiver_dom_threshold_info_dict['txpowerhighalarm'] = dom_module_threshold_data['data']['TXPowerHighAlarm']['value']
-            transceiver_dom_threshold_info_dict['txpowerlowalarm'] = dom_module_threshold_data['data']['TXPowerLowAlarm']['value']
-            transceiver_dom_threshold_info_dict['txpowerhighwarning'] = dom_module_threshold_data['data']['TXPowerHighWarning']['value']
-            transceiver_dom_threshold_info_dict['txpowerlowwarning'] = dom_module_threshold_data['data']['TXPowerLowWarning']['value']
-            transceiver_dom_threshold_info_dict['rxpowerhighalarm'] = dom_module_threshold_data['data']['RXPowerHighAlarm']['value']
-            transceiver_dom_threshold_info_dict['rxpowerlowalarm'] = dom_module_threshold_data['data']['RXPowerLowAlarm']['value']
-            transceiver_dom_threshold_info_dict['rxpowerhighwarning'] = dom_module_threshold_data['data']['RXPowerHighWarning']['value']
-            transceiver_dom_threshold_info_dict['rxpowerlowwarning'] = dom_module_threshold_data['data']['RXPowerLowWarning']['value']
+            transceiver_dom_threshold_info_dict[
+                "temphighalarm"
+            ] = dom_module_threshold_data["data"]["TempHighAlarm"]["value"]
+            transceiver_dom_threshold_info_dict[
+                "templowalarm"
+            ] = dom_module_threshold_data["data"]["TempLowAlarm"]["value"]
+            transceiver_dom_threshold_info_dict[
+                "temphighwarning"
+            ] = dom_module_threshold_data["data"]["TempHighWarning"]["value"]
+            transceiver_dom_threshold_info_dict[
+                "templowwarning"
+            ] = dom_module_threshold_data["data"]["TempLowWarning"]["value"]
+            transceiver_dom_threshold_info_dict[
+                "vcchighalarm"
+            ] = dom_module_threshold_data["data"]["VoltageHighAlarm"]["value"]
+            transceiver_dom_threshold_info_dict[
+                "vcclowalarm"
+            ] = dom_module_threshold_data["data"]["VoltageLowAlarm"]["value"]
+            transceiver_dom_threshold_info_dict[
+                "vcchighwarning"
+            ] = dom_module_threshold_data["data"]["VoltageHighWarning"][
+                "value"
+            ]
+            transceiver_dom_threshold_info_dict[
+                "vcclowwarning"
+            ] = dom_module_threshold_data["data"]["VoltageLowWarning"]["value"]
+            transceiver_dom_threshold_info_dict[
+                "txbiashighalarm"
+            ] = dom_module_threshold_data["data"]["BiasHighAlarm"]["value"]
+            transceiver_dom_threshold_info_dict[
+                "txbiaslowalarm"
+            ] = dom_module_threshold_data["data"]["BiasLowAlarm"]["value"]
+            transceiver_dom_threshold_info_dict[
+                "txbiashighwarning"
+            ] = dom_module_threshold_data["data"]["BiasHighWarning"]["value"]
+            transceiver_dom_threshold_info_dict[
+                "txbiaslowwarning"
+            ] = dom_module_threshold_data["data"]["BiasLowWarning"]["value"]
+            transceiver_dom_threshold_info_dict[
+                "txpowerhighalarm"
+            ] = dom_module_threshold_data["data"]["TXPowerHighAlarm"]["value"]
+            transceiver_dom_threshold_info_dict[
+                "txpowerlowalarm"
+            ] = dom_module_threshold_data["data"]["TXPowerLowAlarm"]["value"]
+            transceiver_dom_threshold_info_dict[
+                "txpowerhighwarning"
+            ] = dom_module_threshold_data["data"]["TXPowerHighWarning"][
+                "value"
+            ]
+            transceiver_dom_threshold_info_dict[
+                "txpowerlowwarning"
+            ] = dom_module_threshold_data["data"]["TXPowerLowWarning"]["value"]
+            transceiver_dom_threshold_info_dict[
+                "rxpowerhighalarm"
+            ] = dom_module_threshold_data["data"]["RXPowerHighAlarm"]["value"]
+            transceiver_dom_threshold_info_dict[
+                "rxpowerlowalarm"
+            ] = dom_module_threshold_data["data"]["RXPowerLowAlarm"]["value"]
+            transceiver_dom_threshold_info_dict[
+                "rxpowerhighwarning"
+            ] = dom_module_threshold_data["data"]["RXPowerHighWarning"][
+                "value"
+            ]
+            transceiver_dom_threshold_info_dict[
+                "rxpowerlowwarning"
+            ] = dom_module_threshold_data["data"]["RXPowerLowWarning"]["value"]
 
         for key in transceiver_dom_threshold_info_dict:
-            transceiver_dom_threshold_info_dict[key] = self.__convert_string_to_num(
-                transceiver_dom_threshold_info_dict[key])
+            transceiver_dom_threshold_info_dict[
+                key
+            ] = self.__convert_string_to_num(
+                transceiver_dom_threshold_info_dict[key]
+            )
 
         return transceiver_dom_threshold_info_dict
 
@@ -851,9 +1211,10 @@ class Sfp(SfpBase):
             A Boolean, True if reset enabled, False if disabled
         """
         reg_status = self._api_helper.read_one_line_file(
-            "/".join([PORT_INFO_PATH, self.port_name, "qsfp_reset"]))
+            "/".join([PORT_INFO_PATH, self.port_name, "qsfp_reset"])
+        )
 
-        return (reg_status == 0)
+        return reg_status == 0
 
     def get_rx_los(self):
         """
@@ -869,21 +1230,24 @@ class Sfp(SfpBase):
         elif self.sfp_type == QSFP_TYPE:
             offset = 0
             dom_channel_monitor_raw = self.__read_eeprom_specific_bytes(
-                (offset + QSFP_CHANNL_RX_LOS_STATUS_OFFSET), QSFP_CHANNL_RX_LOS_STATUS_WIDTH)
+                (offset + QSFP_CHANNL_RX_LOS_STATUS_OFFSET),
+                QSFP_CHANNL_RX_LOS_STATUS_WIDTH,
+            )
             if dom_channel_monitor_raw is not None:
                 rx_los_data = int(dom_channel_monitor_raw[0], 16)
-                rx1_los = (rx_los_data & 0x01 != 0)
-                rx2_los = (rx_los_data & 0x02 != 0)
-                rx3_los = (rx_los_data & 0x04 != 0)
-                rx4_los = (rx_los_data & 0x08 != 0)
-                rx_los = (rx1_los and rx2_los and rx3_los and rx4_los)
+                rx1_los = rx_los_data & 0x01 != 0
+                rx2_los = rx_los_data & 0x02 != 0
+                rx3_los = rx_los_data & 0x04 != 0
+                rx4_los = rx_los_data & 0x08 != 0
+                rx_los = rx1_los and rx2_los and rx3_los and rx4_los
         else:
             offset = 256
             dom_channel_monitor_raw = self.__read_eeprom_specific_bytes(
-                (offset + SFP_CHANNL_STATUS_OFFSET), SFP_CHANNL_STATUS_WIDTH)
+                (offset + SFP_CHANNL_STATUS_OFFSET), SFP_CHANNL_STATUS_WIDTH
+            )
             if dom_channel_monitor_raw is not None:
                 rx_los_data = int(dom_channel_monitor_raw[0], 16)
-                rx_los = (rx_los_data & 0x02 != 0)
+                rx_los = rx_los_data & 0x02 != 0
 
         return rx_los
 
@@ -902,22 +1266,24 @@ class Sfp(SfpBase):
         elif self.sfp_type == QSFP_TYPE:
             offset = 0
             dom_channel_monitor_raw = self.__read_eeprom_specific_bytes(
-                (offset + QSFP_CHANNL_TX_FAULT_STATUS_OFFSET), QSFP_CHANNL_TX_FAULT_STATUS_WIDTH)
+                (offset + QSFP_CHANNL_TX_FAULT_STATUS_OFFSET),
+                QSFP_CHANNL_TX_FAULT_STATUS_WIDTH,
+            )
             if dom_channel_monitor_raw is not None:
                 tx_fault_data = int(dom_channel_monitor_raw[0], 16)
-                tx1_fault = (tx_fault_data & 0x01 != 0)
-                tx2_fault = (tx_fault_data & 0x02 != 0)
-                tx3_fault = (tx_fault_data & 0x04 != 0)
-                tx4_fault = (tx_fault_data & 0x08 != 0)
-                tx4_fault = (
-                    tx1_fault and tx2_fault and tx3_fault and tx4_fault)
+                tx1_fault = tx_fault_data & 0x01 != 0
+                tx2_fault = tx_fault_data & 0x02 != 0
+                tx3_fault = tx_fault_data & 0x04 != 0
+                tx4_fault = tx_fault_data & 0x08 != 0
+                tx4_fault = tx1_fault and tx2_fault and tx3_fault and tx4_fault
         else:
             offset = 256
             dom_channel_monitor_raw = self.__read_eeprom_specific_bytes(
-                (offset + SFP_CHANNL_STATUS_OFFSET), SFP_CHANNL_STATUS_WIDTH)
+                (offset + SFP_CHANNL_STATUS_OFFSET), SFP_CHANNL_STATUS_WIDTH
+            )
             if dom_channel_monitor_raw is not None:
                 tx_fault_data = int(dom_channel_monitor_raw[0], 16)
-                tx4_fault = (tx_fault_data & 0x04 != 0)
+                tx4_fault = tx_fault_data & 0x04 != 0
 
         return tx4_fault
 
@@ -936,22 +1302,26 @@ class Sfp(SfpBase):
         elif self.sfp_type == QSFP_TYPE:
             offset = 0
             dom_channel_monitor_raw = self.__read_eeprom_specific_bytes(
-                (offset + QSFP_CHANNL_DISABLE_STATUS_OFFSET), QSFP_CHANNL_DISABLE_STATUS_WIDTH)
+                (offset + QSFP_CHANNL_DISABLE_STATUS_OFFSET),
+                QSFP_CHANNL_DISABLE_STATUS_WIDTH,
+            )
             if dom_channel_monitor_raw is not None:
                 tx_disable_data = int(dom_channel_monitor_raw[0], 16)
-                tx1_disable = (tx_disable_data & 0x01 != 0)
-                tx2_disable = (tx_disable_data & 0x02 != 0)
-                tx3_disable = (tx_disable_data & 0x04 != 0)
-                tx4_disable = (tx_disable_data & 0x08 != 0)
+                tx1_disable = tx_disable_data & 0x01 != 0
+                tx2_disable = tx_disable_data & 0x02 != 0
+                tx3_disable = tx_disable_data & 0x04 != 0
+                tx4_disable = tx_disable_data & 0x08 != 0
                 tx_disable = (
-                    tx1_disable and tx2_disable and tx3_disable and tx4_disable)
+                    tx1_disable and tx2_disable and tx3_disable and tx4_disable
+                )
         else:
             offset = 256
             dom_channel_monitor_raw = self.__read_eeprom_specific_bytes(
-                (offset + SFP_CHANNL_STATUS_OFFSET), SFP_CHANNL_STATUS_WIDTH)
+                (offset + SFP_CHANNL_STATUS_OFFSET), SFP_CHANNL_STATUS_WIDTH
+            )
             if dom_channel_monitor_raw is not None:
                 tx_disable_data = int(dom_channel_monitor_raw[0], 16)
-                tx_disable = (tx_disable_data & 0xC0 != 0)
+                tx_disable = tx_disable_data & 0xC0 != 0
 
         return tx_disable
 
@@ -972,20 +1342,23 @@ class Sfp(SfpBase):
         elif self.sfp_type == QSFP_TYPE:
             offset = 0
             dom_channel_monitor_raw = self.__read_eeprom_specific_bytes(
-                (offset + QSFP_CHANNL_DISABLE_STATUS_OFFSET), QSFP_CHANNL_DISABLE_STATUS_WIDTH)
+                (offset + QSFP_CHANNL_DISABLE_STATUS_OFFSET),
+                QSFP_CHANNL_DISABLE_STATUS_WIDTH,
+            )
             if dom_channel_monitor_raw is not None:
                 tx_disable_data = int(dom_channel_monitor_raw[0], 16)
-                tx_disable_list[0] = (tx_disable_data & 0x01 != 0)
-                tx_disable_list[1] = (tx_disable_data & 0x02 != 0)
-                tx_disable_list[2] = (tx_disable_data & 0x04 != 0)
-                tx_disable_list[3] = (tx_disable_data & 0x08 != 0)
+                tx_disable_list[0] = tx_disable_data & 0x01 != 0
+                tx_disable_list[1] = tx_disable_data & 0x02 != 0
+                tx_disable_list[2] = tx_disable_data & 0x04 != 0
+                tx_disable_list[3] = tx_disable_data & 0x08 != 0
         else:
             offset = 256
             dom_channel_monitor_raw = self.__read_eeprom_specific_bytes(
-                (offset + SFP_CHANNL_STATUS_OFFSET), SFP_CHANNL_STATUS_WIDTH)
+                (offset + SFP_CHANNL_STATUS_OFFSET), SFP_CHANNL_STATUS_WIDTH
+            )
             if dom_channel_monitor_raw is not None:
                 tx_disable_data = int(dom_channel_monitor_raw[0], 16)
-                tx_disable_list[0] = (tx_disable_data & 0xC0 != 0)
+                tx_disable_list[0] = tx_disable_data & 0xC0 != 0
 
         tx_disabled = 0
         for i in range(len(tx_disable_list)):
@@ -1013,13 +1386,20 @@ class Sfp(SfpBase):
             if sfpd_obj is None:
                 return False
 
-            dom_control_raw = self.__read_eeprom_specific_bytes(
-                QSFP_CONTROL_OFFSET, QSFP_CONTROL_WIDTH) if self.get_presence() else None
+            dom_control_raw = (
+                self.__read_eeprom_specific_bytes(
+                    QSFP_CONTROL_OFFSET, QSFP_CONTROL_WIDTH
+                )
+                if self.get_presence()
+                else None
+            )
             if dom_control_raw is not None:
                 dom_control_data = sfpd_obj.parse_control_bytes(
-                    dom_control_raw, 0)
+                    dom_control_raw, 0
+                )
                 power_override = (
-                    'On' == dom_control_data['data']['PowerOverride']['value'])
+                    "On" == dom_control_data["data"]["PowerOverride"]["value"]
+                )
                 return power_override
         else:
             return False
@@ -1103,9 +1483,10 @@ class Sfp(SfpBase):
 
         try:
             reg_file = open(
-                "/".join([PORT_INFO_PATH, self.port_name, "qsfp_reset"]), "w")
+                "/".join([PORT_INFO_PATH, self.port_name, "qsfp_reset"]), "w"
+            )
         except IOError as e:
-            #print("Error: unable to open file: %s" % str(e))
+            # print("Error: unable to open file: %s" % str(e))
             return False
 
         # Convert our register value back to a hex string and write back
@@ -1119,9 +1500,10 @@ class Sfp(SfpBase):
         # Flip the bit back high and write back to the register to take port out of reset
         try:
             reg_file = open(
-                "/".join([PORT_INFO_PATH, self.port_name, "qsfp_reset"]), "w")
+                "/".join([PORT_INFO_PATH, self.port_name, "qsfp_reset"]), "w"
+            )
         except IOError as e:
-            #print("Error: unable to open file: %s" % str(e))
+            # print("Error: unable to open file: %s" % str(e))
             return False
 
         reg_file.seek(0)
@@ -1142,16 +1524,17 @@ class Sfp(SfpBase):
         if self.sfp_type == QSFP_TYPE:
             sysfsfile_eeprom = None
             try:
-                tx_disable_ctl = 0xf if tx_disable else 0x0
+                tx_disable_ctl = 0xF if tx_disable else 0x0
                 buffer = create_string_buffer(1)
                 buffer[0] = chr(tx_disable_ctl)
                 # Write to eeprom
                 sysfsfile_eeprom = open(
-                    self.port_to_eeprom_mapping[self.port_num], "r+b")
+                    self.port_to_eeprom_mapping[self.port_num], "r+b"
+                )
                 sysfsfile_eeprom.seek(QSFP_CONTROL_OFFSET)
                 sysfsfile_eeprom.write(buffer[0])
             except IOError as e:
-                #print("Error: unable to open file: %s" % str(e))
+                # print("Error: unable to open file: %s" % str(e))
                 return False
             finally:
                 if sysfsfile_eeprom is not None:
@@ -1175,19 +1558,23 @@ class Sfp(SfpBase):
             sysfsfile_eeprom = None
             try:
                 channel_state = self.get_tx_disable_channel()
-                tx_enable_mask = [0xe, 0xd, 0xb, 0x7]
-                tx_disable_mask = [0x1, 0x3, 0x7, 0xf]
-                tx_disable_ctl = channel_state | tx_disable_mask[
-                    channel] if disable else channel_state & tx_enable_mask[channel]
+                tx_enable_mask = [0xE, 0xD, 0xB, 0x7]
+                tx_disable_mask = [0x1, 0x3, 0x7, 0xF]
+                tx_disable_ctl = (
+                    channel_state | tx_disable_mask[channel]
+                    if disable
+                    else channel_state & tx_enable_mask[channel]
+                )
                 buffer = create_string_buffer(1)
                 buffer[0] = chr(tx_disable_ctl)
                 # Write to eeprom
                 sysfsfile_eeprom = open(
-                    self.port_to_eeprom_mapping[self.port_num], "r+b")
+                    self.port_to_eeprom_mapping[self.port_num], "r+b"
+                )
                 sysfsfile_eeprom.seek(QSFP_CONTROL_OFFSET)
                 sysfsfile_eeprom.write(buffer[0])
             except IOError as e:
-                #print("Error: unable to open file: %s" % str(e))
+                # print("Error: unable to open file: %s" % str(e))
                 return False
             finally:
                 if sysfsfile_eeprom is not None:
@@ -1239,11 +1626,12 @@ class Sfp(SfpBase):
                 buffer[0] = chr(power_override_bit | power_set_bit)
                 # Write to eeprom
                 sysfsfile_eeprom = open(
-                    self.port_to_eeprom_mapping[self.port_num], "r+b")
+                    self.port_to_eeprom_mapping[self.port_num], "r+b"
+                )
                 sysfsfile_eeprom.seek(QSFP_POWEROVERRIDE_OFFSET)
                 sysfsfile_eeprom.write(buffer[0])
             except IOError as e:
-                #print("Error: unable to open file: %s" % str(e))
+                # print("Error: unable to open file: %s" % str(e))
                 return False
             finally:
                 if sysfsfile_eeprom is not None:
@@ -1264,7 +1652,8 @@ class Sfp(SfpBase):
         """
         sfputil_helper = SfpUtilHelper()
         sfputil_helper.read_porttab_mappings(
-            self.__get_path_to_port_config_file())
+            self.__get_path_to_port_config_file()
+        )
         name = sfputil_helper.logical[self.index] or "Unknown"
         return name
 
@@ -1275,13 +1664,15 @@ class Sfp(SfpBase):
             bool: True if PSU is present, False if not
         """
         # Get path for access port presence status
-        sysfs_filename = "sfp_modabs" if self.sfp_type == SFP_TYPE else "qsfp_modprs"
+        sysfs_filename = (
+            "sfp_modabs" if self.sfp_type == SFP_TYPE else "qsfp_modprs"
+        )
         reg_path = "/".join([PORT_INFO_PATH, self.port_name, sysfs_filename])
 
         content = self._api_helper.read_one_line_file(reg_path)
         reg_value = int(content)
 
-        return (reg_value == 0)
+        return reg_value == 0
 
     def get_model(self):
         """

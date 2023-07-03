@@ -15,7 +15,6 @@ except ImportError as e:
 
 
 class FanDrawer(FanDrawerBase):
-
     def __init__(self, index, fan_list):
         FanDrawerBase.__init__(self)
 
@@ -47,7 +46,7 @@ class FanDrawer(FanDrawerBase):
             Returns:
             string: The name of the device
         """
-        return 'Fan {}'.format(self._index)
+        return "Fan {}".format(self._index)
 
     def get_presence(self):
         """
